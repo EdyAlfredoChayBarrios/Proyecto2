@@ -29,12 +29,55 @@ public class MaindeProyecto2 {
 			//tamano toma el valor de tama;o de la sociedad
 			long tamano= Sociedad.length();
 			
+			
 			if(tamano <= 0) {
 				System.out.println("NO Existe registros");
 				resultado=false;
+				
 			}else if (tamano >=bytesSociedad) {
+				Sociedad.seek(0);
 				Sociedad s=new Sociedad();
 				
+				while(tamano>=bytesSociedad) {
+				s=new Sociedad();
+				s.setIndice(Sociedad.readInt());
+				byte[] bytNombre=new byte[25];
+				Sociedad.read(bytNombre);
+				s.setBytesNombre(bytNombre);
+				s.setCantidad(Sociedad.readInt());
+				s.setBytes(Sociedad.readInt());
+				s.setPosition(Sociedad.readLong());
+				Sociedad.readByte();
+				tamano-=bytesSociedad;
+				long TamanoCualidades= Sociedad.length();
+				
+				if(TamanoCualidades<=0) {
+					System.out.println("No existe registros");
+					resultado=false;
+					break;
+				}
+				Cualidades.seek(s.getPosition());
+				Cualidades c;
+				TamanoCualidades=s.getCantidad()*bytesSociedad;
+				
+				while(TamanoCualidades>=bytesCualidades) {
+					c =new Cualidades();
+					c.setIndicec(Cualidades.readInt());
+					byte[]bytNombrec=new byte[25];
+					Cualidades.read(bytNombrec);
+					c.setBytesNombrec(bytNombrec);
+					c.setValorDato(Cualidades.readInt());
+					c.setTamano(Cualidades.readInt());
+					c.setNombredeDato();
+					Cualidades.readByte();
+					s.setCualidad(c);
+					TamanoCualidades-=bytesCualidades;
+					
+				}
+				
+				
+				
+				}
 				
 			}
 		} catch (Exception e) {

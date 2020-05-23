@@ -1,5 +1,6 @@
 package src.Proyect2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sociedad {
@@ -18,6 +19,15 @@ public class Sociedad {
 	}
 	public void setCualidades(List<Cualidades> cualidades) {
 		this.cualidades = cualidades;
+	}
+	
+	public void setCualidad(Cualidades Cualidad) {
+		if (this.cualidades == null) {
+			this.cualidades = new ArrayList<>();
+		}
+		this.cualidades.add(Cualidad);
+		this.Cantidad = this.cualidades.size();
+		
 	}
 	public int getIndice() {
 		return indice;
