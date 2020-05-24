@@ -11,7 +11,7 @@ public enum ValorDato {
 	DATE(7);
 	
 	
-	private int valor;
+	private final int valor;
 	
 	private ValorDato (int valor) {
 		this.valor=valor;
