@@ -1,5 +1,6 @@
 package src.Proyect2;
 
+import java.awt.EventQueue;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -9,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
-
 
 public class MaindeProyecto2 {
 
@@ -51,7 +51,7 @@ public class MaindeProyecto2 {
 				while (tamano >= bytesSociedad) {
 					s = new Sociedad();
 					s.setIndice(Sociedad.readInt());
-					byte[] bytNombre = new byte[25];
+					byte[] bytNombre = new byte[30];
 					Sociedad.read(bytNombre);
 					s.setBytesNombre(bytNombre);
 					s.setCantidad(Sociedad.readInt());
@@ -73,7 +73,7 @@ public class MaindeProyecto2 {
 					while (TamanoCualidades >= bytesCualidades) {
 						c = new Cualidades();
 						c.setIndicec(Cualidades.readInt());
-						byte[] bytNombrec = new byte[25];
+						byte[] bytNombrec = new byte[30];
 						Cualidades.read(bytNombrec);
 						c.setBytesNombrec(bytNombrec);
 						c.setValordeDato(Cualidades.readInt());
@@ -665,9 +665,19 @@ public class MaindeProyecto2 {
 		stringFecha = formato.format(fecha);
 		return stringFecha;
 	}
-
+	
 	public static void main(String[] args) {
 		MaindeProyecto2 mdp = new MaindeProyecto2();
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MenuPrincipalGrafico frame = new MenuPrincipalGrafico();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		if (mdp.accederArchivo()) {
 			mdp.menuLaSociedad(true);
 		} else {
@@ -677,5 +687,4 @@ public class MaindeProyecto2 {
 	}
 	
 	
-
 }
