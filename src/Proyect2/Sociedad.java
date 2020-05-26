@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
-
 public class Sociedad {
  //aca se creara el objeto sociedad donde estara las propiedades de la sociedad
 	

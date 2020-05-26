@@ -52,6 +52,10 @@ public class MenuPrincipalGrafico extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JLabel lblMensajedeBorrado = new JLabel("");
+		lblMensajedeBorrado.setBounds(10, 201, 432, 23);
+		contentPane.add(lblMensajedeBorrado);
+		
 		JButton btnAgregarSociedad = new JButton("1. Agregar Sociedad");
 		btnAgregarSociedad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -61,23 +65,47 @@ public class MenuPrincipalGrafico extends JFrame {
 			
 			}
 		});
-		btnAgregarSociedad.setBounds(10, 31, 164, 23);
+		btnAgregarSociedad.setBounds(10, 31, 211, 23);
 		contentPane.add(btnAgregarSociedad);
 				
 		JButton btnModificarSociedad = new JButton("2. Modificar Sociedad");
-		btnModificarSociedad.setBounds(10, 65, 164, 23);
+		btnModificarSociedad.setBounds(10, 65, 211, 23);
 		contentPane.add(btnModificarSociedad);
 		
 		JButton btnenListarSociedad = new JButton("3. Enlistar Sociedad");
-		btnenListarSociedad.setBounds(10, 99, 164, 23);
+		btnenListarSociedad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				EnlistarSociedadGrafico ens= new EnlistarSociedadGrafico();
+				ens.setVisible(true);
+				
+			}
+		});
+		btnenListarSociedad.setBounds(10, 99, 211, 23);
 		contentPane.add(btnenListarSociedad);
 		
 		JButton btnAgregardatosalaSociedad = new JButton("4. Agregar Datos a la Sociedad");
-		btnAgregardatosalaSociedad.setBounds(10, 133, 164, 23);
+		btnAgregardatosalaSociedad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+				AgregarDatosGraficos agd=new AgregarDatosGraficos();
+				agd.setVisible(true);
+			
+			}
+		});
+		btnAgregardatosalaSociedad.setBounds(10, 133, 211, 23);
 		contentPane.add(btnAgregardatosalaSociedad);
 		
 		JButton btnBorrarbasedeDatos = new JButton("5. Borrar Base de Datos");
-		btnBorrarbasedeDatos.setBounds(10, 167, 164, 23);
+		btnBorrarbasedeDatos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				lblMensajedeBorrado.setText("Usted borro toda la base de datos ");		
+				
+				
+			}
+		});
+		btnBorrarbasedeDatos.setBounds(10, 167, 211, 23);
 		contentPane.add(btnBorrarbasedeDatos);
 		
 		JButton btnSalir = new JButton("0. Salir");
@@ -90,5 +118,7 @@ public class MenuPrincipalGrafico extends JFrame {
 		});
 		btnSalir.setBounds(230, 352, 89, 23);
 		contentPane.add(btnSalir);
+		
+		
 	}
 }

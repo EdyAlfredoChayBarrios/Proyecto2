@@ -10,6 +10,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MenuSociedadGrafico extends JFrame {
 
@@ -79,5 +81,17 @@ public class MenuSociedadGrafico extends JFrame {
 		JButton btnNo = new JButton("No");
 		btnNo.setBounds(231, 298, 89, 23);
 		contentPane.add(btnNo);
+		
+		JButton btnVolveralMenu = new JButton("Volver al menu principal");
+		btnVolveralMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				MenuPrincipalGrafico mpg=new MenuPrincipalGrafico();
+				mpg.setVisible(true);
+				
+			}
+		});
+		btnVolveralMenu.setBounds(367, 298, 145, 23);
+		contentPane.add(btnVolveralMenu);
 	}
 }

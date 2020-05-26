@@ -202,21 +202,24 @@ public class MaindeProyecto2 {
 
 	private void modificarSociedad() {
 		try {
-			int indice = 0;
-			while (indice < 1 || indice > listadoSociedades.size()) {
-				for (Sociedad sociedad : listadoSociedades) {
-					System.out.println(sociedad.getIndice() + " ...... " + sociedad.getNombredesoc());
+		
+				int indice = 0;
+				while (indice < 1 || indice > listadoSociedades.size()) {
+					for (Sociedad sociedad : listadoSociedades) {
+						System.out.println(sociedad.getIndice() + " ...... " + sociedad.getNombredesoc());
+					}
+					System.out.println("Seleccione la entidad que desea modificar");
+					indice = sc.nextInt();
+							
 				}
-				System.out.println("Seleccione la entidad que desea modificar");
-				indice = sc.nextInt();
-			}
-			Sociedad sociedad = null;
-			for (Sociedad s : listadoSociedades) {
-				if (indice == s.getIndice()) {
-					sociedad = s;
-					break;
+				Sociedad sociedad = null;
+				for (Sociedad s : listadoSociedades) {
+					if (indice == s.getIndice()) {
+						sociedad = s;
+						break;
+					}
 				}
-			}
+				
 			String nombreArchivo = integrarNombreArchivo(sociedad.getNombredesoc());
 			DatosdeTabla = new RandomAccessFile(rutaOrigen +nombreArchivo, "rw");
 			long tamanoDatos = DatosdeTabla.length();
@@ -326,7 +329,7 @@ public class MaindeProyecto2 {
 				}
 				break;
 			case 2:
-
+				
 				break;
 			case 3:
 				if (listadoSociedades.size() > 0) {
@@ -337,20 +340,20 @@ public class MaindeProyecto2 {
 						for (Sociedad sociedad : listadoSociedades) {
 							mostrarSociedad(sociedad);
 						}
-					} else {
+					} else{
 						for (Sociedad sociedad : listadoSociedades) {
 							System.out.println("Indice: " + sociedad.getIndice());
 							System.out.println("Nombre: " + sociedad.getNombredesoc());
 							System.out.println("Cantidad de atributos: " + sociedad.getCantidad());
 						}
 					}
-				} else {
+				} else{
 					System.out.println("No hay entidades registradas");
 				}
 				break;
 			case 4:
 				int indice = 0;
-				while (indice < 1 || indice > listadoSociedades.size()) {
+				while(indice < 1 || indice > listadoSociedades.size()) {
 					for (Sociedad sociedad : listadoSociedades) {
 						System.out.println(sociedad.getIndice() + " ...... " + sociedad.getNombredesoc());
 					}
