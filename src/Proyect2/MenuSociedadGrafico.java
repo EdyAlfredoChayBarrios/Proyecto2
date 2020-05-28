@@ -35,6 +35,11 @@ public class MenuSociedadGrafico extends JFrame {
 		});
 	}
 
+	
+	
+	
+	
+	
 	/**
 	 * Create the frame.
 	 */

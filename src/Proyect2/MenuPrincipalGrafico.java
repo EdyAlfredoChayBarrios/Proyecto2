@@ -8,6 +8,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.RandomAccessFile;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import java.awt.Window.Type;
 import javax.swing.JMenuBar;
@@ -16,10 +22,17 @@ import javax.swing.JTextField;
 import java.awt.Color;
 
 public class MenuPrincipalGrafico extends JFrame {
-
+	private List<Sociedad> listadoSociedades = new ArrayList<>();
 	private JPanel contentPane;
 	private JTextField textField;
-
+	Scanner sc = new Scanner(System.in);
+	private String rutaOrigen="C:\\Users\\edy chay\\eclipse-workspace\\Proyecto2\\";
+	private  String direccionSociedad = "Sociedad.dat";
+	private String direccionCualidades = "Cualidades.dat";
+	private final int totalBytes = 90, bytesSociedad = 45, bytesCualidades = 45;
+	private final static String formatoFecha = "dd/MM/yyyy";
+	static DateFormat formato = new SimpleDateFormat(formatoFecha);
+	public static MaindeProyecto2 mdp;
 	/**
 	 * Launch the application.
 	 */
@@ -28,6 +41,10 @@ public class MenuPrincipalGrafico extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					
+					mdp = new MaindeProyecto2();
+					mdp.accederArchivo();
+									
 					MenuPrincipalGrafico frame = new MenuPrincipalGrafico();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -35,6 +52,8 @@ public class MenuPrincipalGrafico extends JFrame {
 				}
 			}
 		});
+		
+		
 	}
 	
 
@@ -74,11 +93,12 @@ public class MenuPrincipalGrafico extends JFrame {
 		
 		JButton btnenListarSociedad = new JButton("3. Enlistar Sociedad");
 		btnenListarSociedad.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent arg0) {
+				
 				
 				EnlistarSociedadGrafico ens= new EnlistarSociedadGrafico();
 				ens.setVisible(true);
-				
+								
 			}
 		});
 		btnenListarSociedad.setBounds(10, 99, 211, 23);
@@ -121,4 +141,13 @@ public class MenuPrincipalGrafico extends JFrame {
 		
 		
 	}
+	/*protected int getmostrarSociedad(int i) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	protected void mostrarSociedad(Sociedad sociedad) {
+		// TODO Auto-generated method stub
+		
+	}*/
 }

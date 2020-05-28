@@ -1,6 +1,7 @@
 package src.Proyect2;
 
 import java.awt.EventQueue;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -19,17 +20,17 @@ public class MaindeProyecto2 {
 	RandomAccessFile Cualidades = null;
 
 	// En este paso creara una array list de sociedades
-	private List<Sociedad> listadoSociedades = new ArrayList<>();
-	private String rutaOrigen="C:\\Users\\edy chay\\eclipse-workspace\\Proyecto2\\";
-	private  String direccionSociedad = "Sociedad.dat";
-	private String direccionCualidades = "Cualidades.dat";
-	private final int totalBytes = 90, bytesSociedad = 45, bytesCualidades = 45;
+	public List<Sociedad> listadoSociedades = new ArrayList<>();
+	public  String rutaOrigen="C:\\Users\\edy chay\\eclipse-workspace\\Proyecto2\\";
+	public  String direccionSociedad = "Sociedad.dat";
+	public String direccionCualidades = "Cualidades.dat";
+	public final int totalBytes = 90, bytesSociedad = 45, bytesCualidades = 45;
 	Scanner sc = new Scanner(System.in);
 	private final static String formatoFecha = "dd/MM/yyyy";
 	static DateFormat formato = new SimpleDateFormat(formatoFecha);
 
 	// metodo para acceder a los archivos si es que ya estan creados sino los crea
-	private boolean accederArchivo() {
+	boolean accederArchivo() {
 		boolean resultado = false;
 		try {
 			Sociedad = new RandomAccessFile(direccionSociedad, "rw");
@@ -118,6 +119,7 @@ public class MaindeProyecto2 {
 						tamano = 0;
 					}
 				}
+				
 			} while (tamano < 2 || tamano > 25);
 			sociedad.setNombredesoc(strNombre);
 			System.out.println("cualidades de la sociedad");
@@ -206,7 +208,7 @@ public class MaindeProyecto2 {
 				int indice = 0;
 				while (indice < 1 || indice > listadoSociedades.size()) {
 					for (Sociedad sociedad : listadoSociedades) {
-						System.out.println(sociedad.getIndice() + " ...... " + sociedad.getNombredesoc());
+						System.out.println("\n"+sociedad.getIndice() + " ...... " + sociedad.getNombredesoc());
 					}
 					System.out.println("Seleccione la entidad que desea modificar");
 					indice = sc.nextInt();
@@ -287,41 +289,13 @@ public class MaindeProyecto2 {
 		return nombre.trim() + ".dat";
 	}
 
-	private void mostrarSociedad(Sociedad sociedad) {
-		System.out.println("Indice: " + sociedad.getIndice());
-		System.out.println("Nombre: " + sociedad.getNombredesoc());
-		System.out.println("Cantidad de Cualidades: " + sociedad.getCantidad());
-		System.out.println("Atributos:");
-		int i = 1;
-		for (Cualidades cualidades : sociedad.getCualidades()) {
-			System.out.println("\tNo. " + i);
-			System.out.println("\tNombre: " + cualidades.getNombrec());
-			System.out.println("\tTipo de dato: " + cualidades.getNombredeDato());
-			if (cualidades.isAfirmartamano()) {
-				System.out.println("\ttamano: " + cualidades.getTamano());
-			}
-			i++;
-		}
-	}
+	
 
-	private void menuLaSociedad(boolean mostrarAgregarRegistro) {
-		int opcion = 1;
-		while (opcion != 0) {
-			System.out.println("Elija su opcion");
-			System.out.println("1 ........ Agregar Sociedad");
-			System.out.println("2 ........ Modificar Sociedad");
-			System.out.println("3 ........ enListar Sociedad");
-			if (mostrarAgregarRegistro) {
-				System.out.println("4 ........ Agregar datos a la sociedad");
-			}
-			System.out.println("5 ........ Borrar los dato totales del archivo");
-
-			System.out.println("0 ........ Salir");
-			opcion = sc.nextInt();
+	void menuLaSociedad(int opcion, int opcion2) {
+		boolean mostrarAgregarRegistro = this.accederArchivo();
+		
 			switch (opcion) {
-			case 0:
-				System.out.println("Gracias por usar nuestra aplicacion");
-				break;
+		
 			case 1:
 				if (agregarSociedad()) {
 					System.out.println("Entidad agregada con exito");
@@ -332,35 +306,9 @@ public class MaindeProyecto2 {
 				
 				break;
 			case 3:
-				if (listadoSociedades.size() > 0) {
-					int tmpInt = 0;
-					System.out.println("Desea imprimir los detalles. Si, presione 1. No, presione 0?");
-					tmpInt = sc.nextInt();
-					if (tmpInt == 1) {
-						for (Sociedad sociedad : listadoSociedades) {
-							mostrarSociedad(sociedad);
-						}
-					} else{
-						for (Sociedad sociedad : listadoSociedades) {
-							System.out.println("Indice: " + sociedad.getIndice());
-							System.out.println("Nombre: " + sociedad.getNombredesoc());
-							System.out.println("Cantidad de atributos: " + sociedad.getCantidad());
-						}
-					}
-				} else{
-					System.out.println("No hay entidades registradas");
-				}
-				break;
+				
 			case 4:
-				int indice = 0;
-				while(indice < 1 || indice > listadoSociedades.size()) {
-					for (Sociedad sociedad : listadoSociedades) {
-						System.out.println(sociedad.getIndice() + " ...... " + sociedad.getNombredesoc());
-					}
-					System.out.println("Seleccione la entidad que desea trabajar");
-					indice = sc.nextInt();
-				}
-				iniciar(indice);
+				
 				break;
 			case 5:
 				int confirmar = 0;
@@ -382,10 +330,10 @@ public class MaindeProyecto2 {
 				System.out.println("Opcion no valida");
 				break;
 			}
-		}
+		//}
 	}
 
-	private void iniciar(int indice) {
+	public void iniciar(int indice) {
 		int opcion = 0;
 		String datosdeTabla = "";
 		try {
@@ -669,25 +617,49 @@ public class MaindeProyecto2 {
 		return stringFecha;
 	}
 	
-	public static void main(String[] args) {
-		MaindeProyecto2 mdp = new MaindeProyecto2();
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenuPrincipalGrafico frame = new MenuPrincipalGrafico();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
+	
+	/*********************MODIFICADOS**********************/
+	//ESTE METODO ENLISTA LA SOCIEDAD//
+	public String listar(int opcion) {
+		String cadena ="";
+		System.out.println(listadoSociedades.size());
+		if (listadoSociedades.size() > 0) {
+			
+			if (opcion == 1) {
+				for (Sociedad sociedad : listadoSociedades) {
+					cadena += mostrarSociedad(sociedad);
+				}
+			} else{
+				for (Sociedad sociedad : listadoSociedades) {
+					cadena += "\n\n Indice: " + sociedad.getIndice();
+					cadena += "\n Nombre: " + sociedad.getNombredesoc();
+					cadena += "\n Cantidad de atributos: " + sociedad.getCantidad();
 				}
 			}
-		});
-		if (mdp.accederArchivo()) {
-			mdp.menuLaSociedad(true);
-		} else {
-			mdp.menuLaSociedad(false);
+		} else{
+			System.out.println("No hay entidades registradas");
 		}
-		System.exit(0);
+		return cadena;
 	}
 	
 	
+	private String mostrarSociedad(Sociedad sociedad) {
+		String cadena ="";
+		cadena += "\n\n Indice: " + sociedad.getIndice();
+		cadena += "\n Nombre: " + sociedad.getNombredesoc();
+		cadena += "\n Cantidad de atributos: " + sociedad.getCantidad();
+		cadena += "Atributos:";
+		int i = 1;
+		for (Cualidades cualidades : sociedad.getCualidades()) {
+			cadena += "\n\tNo. " + i;
+			cadena += "\n\tNombre: " + cualidades.getNombrec();
+			cadena += "\n\tTipo de dato: " + cualidades.getNombredeDato();
+			
+			if (cualidades.isAfirmartamano()) {
+				cadena += "\n\ttamano: " + cualidades.getTamano();
+			}
+			i++;
+		}
+		return cadena;
+	}
 }

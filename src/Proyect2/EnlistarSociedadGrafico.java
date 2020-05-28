@@ -20,18 +20,7 @@ public class EnlistarSociedadGrafico extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					EnlistarSociedadGrafico frame = new EnlistarSociedadGrafico();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.
@@ -50,17 +39,37 @@ public class EnlistarSociedadGrafico extends JFrame {
 		lblEnlistarScoiedad.setBounds(35, 26, 293, 22);
 		contentPane.add(lblEnlistarScoiedad);
 		
-		JButton btnSi = new JButton("SI");
-		btnSi.setBounds(360, 26, 89, 23);
-		contentPane.add(btnSi);
-		
-		JButton btnNo = new JButton("No");
-		btnNo.setBounds(475, 26, 89, 23);
-		contentPane.add(btnNo);
-		
 		JTextPane textPane = new JTextPane();
 		textPane.setBounds(76, 91, 605, 238);
 		contentPane.add(textPane);
+		
+		
+		JButton btnSi = new JButton("SI");
+		btnSi.setBounds(360, 26, 89, 23);
+		contentPane.add(btnSi);
+		btnSi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				String datos = MenuPrincipalGrafico.mdp.listar(1);
+				
+				textPane.setText(datos);
+			}
+		});
+		
+		
+		JButton btnNo = new JButton("No");
+		btnNo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				String datos=MenuPrincipalGrafico.mdp.listar(0);
+				textPane.setText(datos);
+				
+			}
+		});
+		btnNo.setBounds(475, 26, 89, 23);
+		contentPane.add(btnNo);
+		
+		
 		
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.addActionListener(new ActionListener() {
