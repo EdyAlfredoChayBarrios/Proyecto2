@@ -81,7 +81,7 @@ public class AgregarDatosGraficos extends JFrame {
 		btnVerdatos.setBounds(30, 54, 349, 23);
 		contentPane.add(btnVerdatos);
 		
-		JButton btnAgergarDatos = new JButton("Ageragr Datos");
+		JButton btnAgergarDatos = new JButton("Agregar Datos");
 		btnAgergarDatos.setBounds(74, 361, 118, 23);
 		contentPane.add(btnAgergarDatos);
 		
@@ -103,6 +103,16 @@ public class AgregarDatosGraficos extends JFrame {
 		
 		JTextPane textModificarDatos = new JTextPane();
 		textModificarDatos.setBounds(629, 395, 150, 20);
-		contentPane.add(textModificarDatos);;
+		contentPane.add(textModificarDatos);
+		
+		JButton btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+			
+		});
+		btnSalir.setBounds(381, 450, 89, 23);
+		contentPane.add(btnSalir);;
 	}
 }

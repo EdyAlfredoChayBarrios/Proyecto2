@@ -20,6 +20,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Color;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class MenuPrincipalGrafico extends JFrame {
 	private List<Sociedad> listadoSociedades = new ArrayList<>();
@@ -72,7 +74,7 @@ public class MenuPrincipalGrafico extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblMensajedeBorrado = new JLabel("");
-		lblMensajedeBorrado.setBounds(10, 201, 432, 23);
+		lblMensajedeBorrado.setBounds(334, 293, 241, 23);
 		contentPane.add(lblMensajedeBorrado);
 		
 		JButton btnAgregarSociedad = new JButton("1. Agregar Sociedad");
@@ -84,11 +86,19 @@ public class MenuPrincipalGrafico extends JFrame {
 			
 			}
 		});
-		btnAgregarSociedad.setBounds(10, 31, 211, 23);
+		btnAgregarSociedad.setBounds(319, 63, 256, 23);
 		contentPane.add(btnAgregarSociedad);
 				
 		JButton btnModificarSociedad = new JButton("2. Modificar Sociedad");
-		btnModificarSociedad.setBounds(10, 65, 211, 23);
+		btnModificarSociedad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ModificarSociedadGrafico msg=new ModificarSociedadGrafico();
+				msg.setVisible(true);
+				
+			}
+		});
+		btnModificarSociedad.setBounds(319, 97, 256, 23);
 		contentPane.add(btnModificarSociedad);
 		
 		JButton btnenListarSociedad = new JButton("3. Enlistar Sociedad");
@@ -101,7 +111,7 @@ public class MenuPrincipalGrafico extends JFrame {
 								
 			}
 		});
-		btnenListarSociedad.setBounds(10, 99, 211, 23);
+		btnenListarSociedad.setBounds(319, 131, 256, 23);
 		contentPane.add(btnenListarSociedad);
 		
 		JButton btnAgregardatosalaSociedad = new JButton("4. Agregar Datos a la Sociedad");
@@ -113,7 +123,7 @@ public class MenuPrincipalGrafico extends JFrame {
 			
 			}
 		});
-		btnAgregardatosalaSociedad.setBounds(10, 133, 211, 23);
+		btnAgregardatosalaSociedad.setBounds(319, 165, 256, 23);
 		contentPane.add(btnAgregardatosalaSociedad);
 		
 		JButton btnBorrarbasedeDatos = new JButton("5. Borrar Base de Datos");
@@ -125,7 +135,7 @@ public class MenuPrincipalGrafico extends JFrame {
 				
 			}
 		});
-		btnBorrarbasedeDatos.setBounds(10, 167, 211, 23);
+		btnBorrarbasedeDatos.setBounds(319, 201, 256, 23);
 		contentPane.add(btnBorrarbasedeDatos);
 		
 		JButton btnSalir = new JButton("0. Salir");
@@ -136,18 +146,29 @@ public class MenuPrincipalGrafico extends JFrame {
 				
 			}
 		});
-		btnSalir.setBounds(230, 352, 89, 23);
+		btnSalir.setBounds(403, 352, 89, 23);
 		contentPane.add(btnSalir);
 		
+		JLabel lblMenuprincipañ = new JLabel("Menu Principal");
+		lblMenuprincipañ.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMenuprincipañ.setFont(new Font("Tahoma", Font.BOLD, 30));
+		lblMenuprincipañ.setBounds(171, 11, 557, 41);
+		contentPane.add(lblMenuprincipañ);
+		
+		JButton btnVerlosdatos = new JButton("6. Ver datos en tabla de una sociedad");
+		btnVerlosdatos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				DatosTablaGrafico dtg =new DatosTablaGrafico();
+				dtg.setVisible(true);
+				
+			}
+			
+			
+		});
+		btnVerlosdatos.setBounds(319, 235, 256, 23);
+		contentPane.add(btnVerlosdatos);
+		
 		
 	}
-	/*protected int getmostrarSociedad(int i) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	protected void mostrarSociedad(Sociedad sociedad) {
-		// TODO Auto-generated method stub
-		
-	}*/
 }

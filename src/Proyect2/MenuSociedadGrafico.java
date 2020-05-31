@@ -12,6 +12,17 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JList;
+import javax.swing.JToggleButton;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.AncestorEvent;
+import javax.swing.JScrollBar;
+import javax.swing.JRadioButton;
+import javax.swing.JSeparator;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import java.awt.Font;
 
 public class MenuSociedadGrafico extends JFrame {
 
@@ -53,38 +64,39 @@ public class MenuSociedadGrafico extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblIngresedatos = new JLabel("Ingrese datos a la sociedad");
-		lblIngresedatos.setBounds(21, 26, 201, 25);
-		contentPane.add(lblIngresedatos);
+		JLabel lblIngresarsociedad = new JLabel("Ingrese sociedad");
+		lblIngresarsociedad.setFont(lblIngresarsociedad.getFont().deriveFont(lblIngresarsociedad.getFont().getSize() + 9f));
+		lblIngresarsociedad.setBounds(21, 11, 300, 25);
+		contentPane.add(lblIngresarsociedad);
 		
 		JLabel lblingresenombre = new JLabel("Ingrese nombre de la sociedad");
 		lblingresenombre.setBounds(21, 59, 178, 14);
 		contentPane.add(lblingresenombre);
 		
 		textField = new JTextField();
-		textField.setBounds(204, 56, 235, 20);
+		textField.setBounds(267, 56, 235, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
 		JLabel lblIngresar = new JLabel("Ingrese el nombre de la cualidades");
-		lblIngresar.setBounds(24, 172, 175, 14);
+		lblIngresar.setBounds(24, 172, 204, 14);
 		contentPane.add(lblIngresar);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(204, 169, 235, 20);
+		textField_1.setBounds(267, 169, 235, 20);
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
 		
 		JButton btnSi = new JButton("Si");
-		btnSi.setBounds(106, 298, 89, 23);
+		btnSi.setBounds(110, 316, 89, 23);
 		contentPane.add(btnSi);
 		
 		JLabel lblSioNo = new JLabel("Desea ingresar otra cualidad a la sociedad ?");
-		lblSioNo.setBounds(110, 262, 329, 14);
+		lblSioNo.setBounds(110, 291, 329, 14);
 		contentPane.add(lblSioNo);
 		
 		JButton btnNo = new JButton("No");
-		btnNo.setBounds(231, 298, 89, 23);
+		btnNo.setBounds(232, 316, 89, 23);
 		contentPane.add(btnNo);
 		
 		JButton btnVolveralMenu = new JButton("Volver al menu principal");
@@ -96,7 +108,34 @@ public class MenuSociedadGrafico extends JFrame {
 				
 			}
 		});
-		btnVolveralMenu.setBounds(367, 298, 145, 23);
+		btnVolveralMenu.setBounds(367, 316, 185, 23);
 		contentPane.add(btnVolveralMenu);
+		
+		JLabel lblTipodeDato = new JLabel("Seleccione el tipo de dato que va a guardar en las cualidad");
+		lblTipodeDato.setBounds(21, 215, 364, 25);
+		contentPane.add(lblTipodeDato);
+		
+		JComboBox list = new JComboBox();
+		list.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				
+			}
+			  		
+		});
+		list.setModel(new DefaultComboBoxModel(new String[] {"INT", "LONG", "FLOAT", "DOUBLE", "CHAR", "STRING", "DATE"}));
+		list.setBounds(395, 215, 157, 25);
+		contentPane.add(list);
+		
+		JButton btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				dispose();
+			}
+		});
+		btnSalir.setBounds(425, 413, 89, 23);
+		contentPane.add(btnSalir);
 	}
 }
