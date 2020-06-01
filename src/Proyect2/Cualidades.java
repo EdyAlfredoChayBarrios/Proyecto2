@@ -5,12 +5,12 @@ package src.Proyect2;
 public class Cualidades {
 	// aca se creara el objeto cualidades donde estara los datos de las sociedades
 
-	private int indicec;
-	private String nombre;
-	private int valordeDato;
+	private int indicec; //4
+	private String nombre; //30
+	private int valordeDato; // 4
 	private String nombredeDato;
-	private int tamano;
-	private int bytes;
+	private int tamano;  //4
+	private int bytes;   
 	private boolean afirmartamano;
 	private byte[] bytesNombrec;
 	private ValorDato valorDato;

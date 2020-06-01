@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JList;
 import javax.swing.JToggleButton;
@@ -29,23 +31,13 @@ public class MenuSociedadGrafico extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
+	private JTextField textField_2;
 
+	public List<Cualidades> cualidades;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenuSociedadGrafico frame = new MenuSociedadGrafico();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	
 	
 	
 	
@@ -55,6 +47,8 @@ public class MenuSociedadGrafico extends JFrame {
 	 * Create the frame.
 	 */
 	public MenuSociedadGrafico() {
+		cualidades = new ArrayList<Cualidades>();
+		
 		setTitle("1...AGREGAR SOCIEDAD");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 939, 557);
@@ -87,18 +81,6 @@ public class MenuSociedadGrafico extends JFrame {
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
 		
-		JButton btnSi = new JButton("Si");
-		btnSi.setBounds(110, 316, 89, 23);
-		contentPane.add(btnSi);
-		
-		JLabel lblSioNo = new JLabel("Desea ingresar otra cualidad a la sociedad ?");
-		lblSioNo.setBounds(110, 291, 329, 14);
-		contentPane.add(lblSioNo);
-		
-		JButton btnNo = new JButton("No");
-		btnNo.setBounds(232, 316, 89, 23);
-		contentPane.add(btnNo);
-		
 		JButton btnVolveralMenu = new JButton("Volver al menu principal");
 		btnVolveralMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -108,7 +90,7 @@ public class MenuSociedadGrafico extends JFrame {
 				
 			}
 		});
-		btnVolveralMenu.setBounds(367, 316, 185, 23);
+		btnVolveralMenu.setBounds(189, 413, 185, 23);
 		contentPane.add(btnVolveralMenu);
 		
 		JLabel lblTipodeDato = new JLabel("Seleccione el tipo de dato que va a guardar en las cualidad");
@@ -116,16 +98,15 @@ public class MenuSociedadGrafico extends JFrame {
 		contentPane.add(lblTipodeDato);
 		
 		JComboBox list = new JComboBox();
-		list.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				
-				
-			}
-			  		
-		});
+		textField_2 = new JTextField();
+		textField_2.setEditable(false);
+		textField_2.setBounds(596, 172, 219, 181);
+		contentPane.add(textField_2);
+		textField_2.setColumns(10);
+		
+		
 		list.setModel(new DefaultComboBoxModel(new String[] {"INT", "LONG", "FLOAT", "DOUBLE", "CHAR", "STRING", "DATE"}));
-		list.setBounds(395, 215, 157, 25);
+		list.setBounds(386, 215, 157, 25);
 		contentPane.add(list);
 		
 		JButton btnSalir = new JButton("Salir");
@@ -137,5 +118,47 @@ public class MenuSociedadGrafico extends JFrame {
 		});
 		btnSalir.setBounds(425, 413, 89, 23);
 		contentPane.add(btnSalir);
+		
+		
+		Sociedad sociedad = new Sociedad();
+		sociedad.setIndice(MenuPrincipalGrafico.mdp.listadoSociedades.size() + 1); 
+		
+		JButton btnSi = new JButton("Agregar cualidad");
+		btnSi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Cualidades cualidades = new Cualidades();
+				cualidades.setNombrec(textField_1.getText());
+				cualidades.setValordeDato(list.getSelectedIndex()+1);
+				cualidades.setNombredeDato();
+				cualidades.setIndicec(sociedad.getIndice());
+				cualidades.setTamano(20);
+				sociedad.setCualidades(cualidades);
+				
+				String datos = "";
+				for(Cualidades c : sociedad.getCualidades()) {
+					datos+= "\r\n"+c.getNombrec() + " : " + c.getNombredeDato() + System.lineSeparator();
+				}
+				textField_2.setText(datos);
+			}
+		});
+		btnSi.setBounds(315, 251, 144, 23);
+		contentPane.add(btnSi);
+		
+		JButton btnAgregarSociedad = new JButton("Agregar sociedad");
+		btnAgregarSociedad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sociedad.setNombredesoc(textField.getText());
+				boolean r = MenuPrincipalGrafico.mdp.agregarSociedad(sociedad);
+				if(r) {
+					//mostrar mensaje de accion correcta
+				}
+			}
+		});
+		btnAgregarSociedad.setBounds(291, 330, 144, 40);
+		contentPane.add(btnAgregarSociedad);
+		
+		
+		
 	}
 }

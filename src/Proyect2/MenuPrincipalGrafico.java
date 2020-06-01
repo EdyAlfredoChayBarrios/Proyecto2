@@ -118,8 +118,8 @@ public class MenuPrincipalGrafico extends JFrame {
 		btnAgregardatosalaSociedad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			
-				AgregarDatosGraficos agd=new AgregarDatosGraficos();
-				agd.setVisible(true);
+				AgregarDatosTabla adt=new AgregarDatosTabla();
+				adt.setVisible(true);
 			
 			}
 		});
@@ -129,7 +129,7 @@ public class MenuPrincipalGrafico extends JFrame {
 		JButton btnBorrarbasedeDatos = new JButton("5. Borrar Base de Datos");
 		btnBorrarbasedeDatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				MenuPrincipalGrafico.mdp.borrarArchivos();
 				lblMensajedeBorrado.setText("Usted borro toda la base de datos ");		
 				
 				

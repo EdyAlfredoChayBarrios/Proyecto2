@@ -31,6 +31,7 @@ public class MaindeProyecto2 {
 
 	// metodo para acceder a los archivos si es que ya estan creados sino los crea
 	boolean accederArchivo() {
+		listadoSociedades = new ArrayList<>();
 		boolean resultado = false;
 		try {
 			Sociedad = new RandomAccessFile(direccionSociedad, "rw");
@@ -69,7 +70,7 @@ public class MaindeProyecto2 {
 					}
 					Cualidades.seek(s.getPosition());
 					Cualidades c;
-					TamanoCualidades = s.getCantidad() * bytesSociedad;
+					TamanoCualidades = s.getCantidad() * bytesCualidades;
 
 					while (TamanoCualidades >= bytesCualidades) {
 						c = new Cualidades();
@@ -99,193 +100,10 @@ public class MaindeProyecto2 {
 		return resultado;
 	}
 
-	private boolean agregarSociedad() {
-		boolean resultado = false;
-		try {
-			Sociedad sociedad = new Sociedad();
-			sociedad.setIndice(listadoSociedades.size() + 1);
-			System.out.println("Ingrese el nombre de la entidad");
-			String strNombre = "";
-			int tamano = 0;
-			do {
-				strNombre = sc.nextLine();
-				tamano = strNombre.length();
-				if (tamano < 2 || tamano > 30) {
-					System.out.println("La tamano del nombre no es valida [3 - 30]");
-				} else {
-					if (strNombre.contains(" ")) {
-						System.out
-								.println("El nombre no puede contener espacios, sustituya por guion bajo (underscore)");
-						tamano = 0;
-					}
-				}
-				
-			} while (tamano < 2 || tamano > 25);
-			sociedad.setNombredesoc(strNombre);
-			System.out.println("cualidades de la sociedad");
-			int bndDetener = 0;
-			do {
-				Cualidades cualidades = new Cualidades();
-				cualidades.setIndicec(sociedad.getIndice());
-				tamano = 0;
-				System.out.println("Escriba el nombre del atributo no. " + (sociedad.getCantidad() + 1));
-				do {
-					strNombre = sc.nextLine();
-					tamano = strNombre.length();
-					if (tamano < 2 || tamano > 30) {
-						System.out.println("La tamano del nombre no es valida [3 - 30]");
-					} else {
-						if (strNombre.contains(" ")) {
-							System.out.println(
-									"El nombre no puede contener espacios, sustituya por guion bajo (underscore)");
-							tamano = 0;
-						}
-					}
-				} while (tamano < 2 || tamano > 30);
-				cualidades.setNombrec(strNombre);
-				System.out.println("Seleccione el tipo de dato");
-				System.out.println(ValorDato.INT.getValor() + " .......... " + ValorDato.INT.name());
-				System.out.println(ValorDato.LONG.getValor() + " .......... " + ValorDato.LONG.name());
-				System.out.println(ValorDato.FLOAT.getValor() + " .......... " + ValorDato.FLOAT.name());
-				System.out.println(ValorDato.DOUBLE.getValor() + " .......... " + ValorDato.DOUBLE.name());
-				System.out.println(ValorDato.CHAR.getValor() + " .......... " + ValorDato.CHAR.name());
-				System.out.println(ValorDato.STRING.getValor() + " .......... " + ValorDato.STRING.name());
-				System.out.println(ValorDato.DATE.getValor() + " .......... " + ValorDato.DATE.name());
-				
-				cualidades.setValordeDato(sc.nextInt());
-				if (cualidades.isAfirmartamano()) {
-					System.out.println("Ingrese la tamano");
-					cualidades.setTamano(sc.nextInt());
-				} else {
-					cualidades.setTamano(0);
-				}
-				cualidades.setNombredeDato();
-				sociedad.setCualidades(cualidades);
-				System.out.println("Desea agregar otro atributo presione cualquier numero, de lo contrario 0");
-				bndDetener = sc.nextInt();
-			} while (bndDetener != 0);
-			System.out.println("Los datos a registrar son: ");
-			mostrarSociedad(sociedad);
-			System.out.println("Presione 1 para guardar 0 para cancelar");
-			tamano = sc.nextInt();
-			if (tamano == 1) {
+	
 
-				sociedad.setPosition(Cualidades.length());
-				Cualidades.seek(Cualidades.length());
-				for (Cualidades cualidad : sociedad.getCualidades()) {
-					Cualidades.writeInt(cualidad.getIndicec());
-					Cualidades.write(cualidad.getBytesNombrec());
-					Cualidades.writeInt(cualidad.getValordeDato());
-					Cualidades.writeInt(cualidad.getTamano());
-					Cualidades.write("\n".getBytes());
-				}
-
-				Sociedad.writeInt(sociedad.getIndice());
-				Sociedad.write(sociedad.getBytesNombre());
-				Sociedad.writeInt(sociedad.getCantidad());
-				Sociedad.writeInt(sociedad.getBytes());
-				Sociedad.writeLong(sociedad.getPosition());
-				Sociedad.write("\n".getBytes());
-				listadoSociedades.add(sociedad);
-				resultado = true;
-			} else {
-				System.out.println("No se guardo la entidad debido a que el usuario decidio cancelarlo");
-				resultado = false;
-			}
-
-			System.out.println("Presione una tecla para continuar...");
-			System.in.read();
-		} catch (Exception e) {
-			resultado = false;
-			e.printStackTrace();
-		}
-		return resultado;
-	}
-
-	private void modificarSociedad() {
-		try {
-		
-				int indice = 0;
-				while (indice < 1 || indice > listadoSociedades.size()) {
-					for (Sociedad sociedad : listadoSociedades) {
-						System.out.println("\n"+sociedad.getIndice() + " ...... " + sociedad.getNombredesoc());
-					}
-					System.out.println("Seleccione la entidad que desea modificar");
-					indice = sc.nextInt();
-							
-				}
-				Sociedad sociedad = null;
-				for (Sociedad s : listadoSociedades) {
-					if (indice == s.getIndice()) {
-						sociedad = s;
-						break;
-					}
-				}
-				
-			String nombreArchivo = integrarNombreArchivo(sociedad.getNombredesoc());
-			DatosdeTabla = new RandomAccessFile(rutaOrigen +nombreArchivo, "rw");
-			long tamanoDatos = DatosdeTabla.length();
-			DatosdeTabla.close();
-			if (tamanoDatos > 0) {
-				System.out.println("No es posible modificar la entidad debido a que ya tiene datos asociados");
-			} else {
-				boolean bndEncontrado = false, bndModificado = false;
-				Sociedad.seek(0);
-				long tamano = Sociedad.length();
-				int registros = 0, salir = 0, i;
-				Sociedad s;
-				byte[] tmpBytes;
-				while (tamano > totalBytes) {
-					s = new Sociedad();
-					s.setIndice(Sociedad.readInt());
-					tmpBytes = new byte[30];
-					Sociedad.read(tmpBytes);
-					s.setBytesNombre(tmpBytes);
-					s.setCantidad(Sociedad.readInt());
-					s.setBytes(Sociedad.readInt());
-					s.setPosition(Sociedad.readLong());
-					if (sociedad.getIndice() == s.getIndice()) {
-						System.out.println("Si no desea modificar el campo presione enter");
-						System.out.println("Ingrese el nombre");
-						String tmpStr = "";
-						int len = 0;
-						long position;
-						do {
-							tmpStr = sc.nextLine();
-							len = tmpStr.length();
-							if (len == 1 || len > 30) {
-								System.out.println("La tamano del nombre no es valida [2 - 30]");
-							}
-						} while (len == 1 || len > 30);
-						if (len > 0) {
-							s.setNombredesoc(tmpStr);
-							position = registros * totalBytes;
-							DatosdeTabla.seek(position);
-							DatosdeTabla.skipBytes(4);
-							DatosdeTabla.write(s.getBytesNombre());
-							bndModificado = true;
-						}
-						i = 1;
-						for (Cualidades c : sociedad.getCualidades()) {
-							System.out.println("Modificando atributo 1");
-							System.out.println(c.getNombrec().trim());
-						}
-
-						break;
-					}
-					registros++;
-
-					tamano -= totalBytes;
-				}
-			}
-		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
-		}
-
-	}
-
+	
 	private String integrarNombreArchivo(String nombre) {
-
 		return nombre.trim() + ".dat";
 	}
 
@@ -297,10 +115,6 @@ public class MaindeProyecto2 {
 			switch (opcion) {
 		
 			case 1:
-				if (agregarSociedad()) {
-					System.out.println("Entidad agregada con exito");
-					mostrarAgregarRegistro = true;
-				}
 				break;
 			case 2:
 				
@@ -475,7 +289,7 @@ public class MaindeProyecto2 {
 		}
 	}
 
-	private boolean borrarArchivos() {
+	public boolean borrarArchivos() {
 		boolean resultado = false;
 		try {
 			File file;
@@ -662,4 +476,188 @@ public class MaindeProyecto2 {
 		}
 		return cadena;
 	}
+	
+	public boolean agregarSociedad(Sociedad sociedad) {
+		try {
+			sociedad.setIndice(listadoSociedades.size() + 1);
+			
+			sociedad.setPosition(Cualidades.length());
+			Cualidades.seek(Cualidades.length());
+			for (Cualidades cualidad : sociedad.getCualidades()) {
+				Cualidades.writeInt(cualidad.getIndicec());
+				Cualidades.write(cualidad.getBytesNombrec());
+				Cualidades.writeInt(cualidad.getValordeDato());
+				Cualidades.writeInt(cualidad.getTamano());
+				Cualidades.write("\n".getBytes());
+			}
+
+			Sociedad.writeInt(sociedad.getIndice());
+			Sociedad.write(sociedad.getBytesNombre());
+			Sociedad.writeInt(sociedad.getCantidad());
+			Sociedad.writeInt(sociedad.getBytes());
+			Sociedad.writeLong(sociedad.getPosition());
+			Sociedad.write("\n".getBytes());
+			listadoSociedades.add(sociedad);
+			return true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public String modificarNombreCualidad(int indice, String nombre, String nuevoNombre) {
+		
+		try {				
+			Sociedad sociedad = null;
+			for (Sociedad s : listadoSociedades) {
+				if (indice == s.getIndice()) {
+					sociedad = s;
+					break;
+				}
+			}
+			String nombreArchivo = integrarNombreArchivo(sociedad.getNombredesoc());
+			DatosdeTabla = new RandomAccessFile(rutaOrigen +nombreArchivo, "rw");
+			long tamanoDatos = DatosdeTabla.length();
+			DatosdeTabla.close();
+			if (tamanoDatos > 0) {
+				return "No es posible modificar la entidad debido a que ya tiene datos asociados";
+			} 
+				
+			Sociedad.seek(0);
+			long tamano = Sociedad.length();
+			int registros = 0;
+			Sociedad s;
+			long position;
+			while (tamano >= bytesSociedad) {
+				s = new Sociedad();
+				s.setIndice(Sociedad.readInt());
+				byte[] bytNombre = new byte[30];
+				Sociedad.read(bytNombre);
+				s.setBytesNombre(bytNombre);
+				s.setCantidad(Sociedad.readInt());
+				s.setBytes(Sociedad.readInt());
+				s.setPosition(Sociedad.readLong());
+				Sociedad.readByte();
+				tamano -= bytesSociedad;
+				long TamanoCualidades = Sociedad.length();
+
+				if (TamanoCualidades <= 0) {
+					return "No existe registros";
+				}
+				Cualidades.seek(s.getPosition());
+				Cualidades c;
+				TamanoCualidades = s.getCantidad() * bytesCualidades;
+				if (sociedad.getIndice() == s.getIndice()) {
+					while (TamanoCualidades >= bytesCualidades) {
+						c = new Cualidades();
+						c.setIndicec(Cualidades.readInt());
+						byte[] bytNombrec = new byte[30];
+						Cualidades.read(bytNombrec);
+						c.setBytesNombrec(bytNombrec);
+						c.setValordeDato(Cualidades.readInt());
+						c.setTamano(Cualidades.readInt());
+						c.setNombredeDato();
+						Cualidades.readByte();						
+						TamanoCualidades -= bytesCualidades;
+						if(c.getNombrec().trim().equals(nombre)) {
+							c.setNombrec(nuevoNombre);
+							position = registros * bytesCualidades;
+							if(registros>0) position--;
+							Cualidades.seek(position);
+							Cualidades.writeInt(c.getIndicec());							
+							Cualidades.write(c.getBytesNombrec());							
+							return "modificado";
+						}
+						registros++;
+					}	
+				}
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+		return "";
+	}
+	
+	public String modificarTipoCualidad(int indice, String nombre, int tipo) {
+		
+		try {				
+			Sociedad sociedad = null;
+			for (Sociedad s : listadoSociedades) {
+				if (indice == s.getIndice()) {
+					sociedad = s;
+					break;
+				}
+			}
+			
+			String nombreArchivo = integrarNombreArchivo(sociedad.getNombredesoc());
+			DatosdeTabla = new RandomAccessFile(rutaOrigen +nombreArchivo, "rw");
+			long tamanoDatos = DatosdeTabla.length();
+			DatosdeTabla.close();
+			if (tamanoDatos > 0) {
+				return "No es posible modificar la entidad debido a que ya tiene datos asociados";
+			} 
+				
+			Sociedad.seek(0);
+			long tamano = Sociedad.length();
+			int registros = 0;
+			Sociedad s;
+			long position;
+			
+			while (tamano >= bytesSociedad) {
+				s = new Sociedad();
+				s.setIndice(Sociedad.readInt());
+				byte[] bytNombre = new byte[30];
+				Sociedad.read(bytNombre);
+				s.setBytesNombre(bytNombre);
+				s.setCantidad(Sociedad.readInt());
+				s.setBytes(Sociedad.readInt());
+				s.setPosition(Sociedad.readLong());
+				Sociedad.readByte();
+				tamano -= bytesSociedad;
+				long TamanoCualidades = Sociedad.length();
+
+				if (TamanoCualidades <= 0) {
+					return "No existe registros";
+				}
+				Cualidades.seek(s.getPosition());
+				Cualidades c;
+				TamanoCualidades = s.getCantidad() * bytesCualidades;
+				if (sociedad.getIndice() == s.getIndice()) {
+					while (TamanoCualidades >= bytesCualidades) {
+						c = new Cualidades();
+						c.setIndicec(Cualidades.readInt());
+						byte[] bytNombrec = new byte[30];
+						Cualidades.read(bytNombrec);
+						c.setBytesNombrec(bytNombrec);
+						c.setValordeDato(Cualidades.readInt());
+						c.setTamano(Cualidades.readInt());
+						c.setNombredeDato();
+						Cualidades.readByte();
+						s.setCualidades(c);
+						TamanoCualidades -= bytesCualidades;
+						if(c.getNombrec().trim().equals(nombre)) {
+							c.setValordeDato(tipo);
+							c.setNombredeDato();
+							position = registros * bytesCualidades ;
+							Cualidades.seek(position);
+							Cualidades.writeInt(c.getIndicec());
+							Cualidades.write(c.getBytesNombrec());
+							Cualidades.writeInt(c.getValordeDato());
+							
+							return "modificado";
+						}
+						registros++;
+					}	
+				}
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+		return "";
+	}
+
+
 }

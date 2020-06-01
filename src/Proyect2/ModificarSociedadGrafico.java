@@ -9,21 +9,22 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
 public class ModificarSociedadGrafico extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField_1;
-	private JTextField textField;
+	private JTextField textNombre;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -34,7 +35,7 @@ public class ModificarSociedadGrafico extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
@@ -48,11 +49,29 @@ public class ModificarSociedadGrafico extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JComboBox list_1_1 = new JComboBox();
+		list_1_1.setBounds(268, 179, 236, 22);
+		contentPane.add(list_1_1);
 		JLabel lblSelecciondesociedad = new JLabel("Seleccione la sociedad existente");
 		lblSelecciondesociedad.setBounds(29, 75, 302, 14);
 		contentPane.add(lblSelecciondesociedad);
 		
 		JComboBox list = new JComboBox();
+		list.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			 String sociedad = list.getSelectedItem().toString();
+			 String strindice = sociedad.split("-")[0];
+			 for(Sociedad s : MenuPrincipalGrafico.mdp.listadoSociedades ) {
+				 if(s.getIndice() == Integer.parseInt(strindice)) {
+					 DefaultComboBoxModel modeloCualidad = new DefaultComboBoxModel();
+					 list_1_1.setModel(modeloCualidad);
+					 for(Cualidades c : s.getCualidades()) {
+						 modeloCualidad.addElement(c.getNombrec() + "-"+ c.getNombredeDato()); 
+					 }
+				 }
+			 }
+			}
+		});
 		list.setBounds(334, 71, 236, 22);
 		contentPane.add(list);
 		
@@ -85,65 +104,78 @@ public class ModificarSociedadGrafico extends JFrame {
 		JLabel lblAdvertencia = new JLabel("Advertencia solo puede  modificar Sociedades Vacias (sociedades que no tengan datos)");
 		lblAdvertencia.setForeground(Color.ORANGE);
 		lblAdvertencia.setFont(lblAdvertencia.getFont().deriveFont(lblAdvertencia.getFont().getSize() + 3f));
-		lblAdvertencia.setBounds(42, 126, 828, 36);
+		lblAdvertencia.setBounds(39, 105, 828, 36);
 		contentPane.add(lblAdvertencia);
 		
 		JButton btnAgregarNuevaCualidad = new JButton("Agregar Nueva Cualidad");
-		btnAgregarNuevaCualidad.setBounds(42, 173, 188, 23);
+		btnAgregarNuevaCualidad.setBounds(42, 309, 188, 23);
 		contentPane.add(btnAgregarNuevaCualidad);
 		
 		JButton btnEliminar = new JButton("Eliminar Cualidad");
-		btnEliminar.setBounds(42, 207, 188, 23);
+		btnEliminar.setBounds(39, 207, 188, 23);
 		contentPane.add(btnEliminar);
 		
+		textNombre = new JTextField();
+		textNombre.setColumns(10);
+		textNombre.setBounds(268, 242, 156, 20);
+		contentPane.add(textNombre);
+		
 		JButton btnCambiarNombre = new JButton("Editar nombre");
-		btnCambiarNombre.setBounds(42, 241, 188, 23);
+		btnCambiarNombre.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String sociedad = list.getSelectedItem().toString();
+				String strindice = sociedad.split("-")[0];
+				String cualidadselect = list_1_1.getSelectedItem().toString();
+				String nombre = cualidadselect.split("-")[0];
+				MenuPrincipalGrafico.mdp.modificarNombreCualidad(Integer.parseInt(strindice),nombre.trim(), textNombre.getText());
+				MenuPrincipalGrafico.mdp.accederArchivo();
+			}
+		});
+		btnCambiarNombre.setBounds(39, 241, 188, 23);
 		contentPane.add(btnCambiarNombre);
 		
+		JComboBox listTipodeDato = new JComboBox();
+		listTipodeDato.setBounds(472, 241, 157, 23);
+		listTipodeDato.setModel(new DefaultComboBoxModel(new String[] {"INT", "LONG", "FLOAT", "DOUBLE", "CHAR", "STRING", "DATE"}));
+		contentPane.add(listTipodeDato);
+		
 		JButton btnCambiartipodedato = new JButton("Cambiar tipo de dato");
+		btnCambiartipodedato.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String sociedad = list.getSelectedItem().toString();
+				String strindice = sociedad.split("-")[0];
+				String cualidadselect = list_1_1.getSelectedItem().toString();
+				String nombre = cualidadselect.split("-")[0];
+				int tipo = listTipodeDato.getSelectedIndex()+1;
+				MenuPrincipalGrafico.mdp.modificarTipoCualidad(Integer.parseInt(strindice),nombre.trim(), tipo);
+				MenuPrincipalGrafico.mdp.accederArchivo();
+			}
+		});
 		btnCambiartipodedato.setBounds(42, 275, 188, 23);
 		contentPane.add(btnCambiartipodedato);
 		
-		JComboBox list_1_1 = new JComboBox();
-		list_1_1.setBounds(250, 207, 236, 22);
-		contentPane.add(list_1_1);
 		
-		JComboBox list_1_2 = new JComboBox();
-		list_1_2.setBounds(250, 241, 236, 22);
-		contentPane.add(list_1_2);
 		
-		JComboBox list_1_3 = new JComboBox();
-		list_1_3.setBounds(250, 275, 236, 22);
-		contentPane.add(list_1_3);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(661, 242, 156, 20);
-		contentPane.add(textField_1);
 		
-		JComboBox list_2 = new JComboBox();
-		list_2.setBounds(661, 275, 157, 23);
-		contentPane.add(list_2);
 		
-		JLabel lblSeleccioneTipoDe = new JLabel("Seleccione tipo de dato");
-		lblSeleccioneTipoDe.setBounds(495, 279, 156, 14);
-		contentPane.add(lblSeleccioneTipoDe);
-		
-		JLabel lblEscribaElNombre = new JLabel("Escriba el nombre");
-		lblEscribaElNombre.setBounds(496, 250, 156, 14);
-		contentPane.add(lblEscribaElNombre);
-		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(250, 174, 156, 20);
-		contentPane.add(textField);
-		
-		JComboBox list_2_1 = new JComboBox();
-		list_2_1.setBounds(660, 173, 157, 23);
-		contentPane.add(list_2_1);
 		
 		JLabel lblSeleccioneTipoDe_1 = new JLabel("Seleccione tipo de dato");
-		lblSeleccioneTipoDe_1.setBounds(495, 177, 156, 14);
+		lblSeleccioneTipoDe_1.setBounds(473, 216, 156, 14);
 		contentPane.add(lblSeleccioneTipoDe_1);
+		
+		JLabel lblSeleccioneTipoDe_1_1 = new JLabel("Nombre");
+		lblSeleccioneTipoDe_1_1.setBounds(268, 217, 156, 14);
+		contentPane.add(lblSeleccioneTipoDe_1_1);
+		
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		list.setModel(modelo);
+		for(Sociedad a : MenuPrincipalGrafico.mdp.listadoSociedades)
+		{
+			modelo.addElement(a.getIndice() + "-" + a.getNombredesoc());
+		}
+		
+		
 	}
 }
