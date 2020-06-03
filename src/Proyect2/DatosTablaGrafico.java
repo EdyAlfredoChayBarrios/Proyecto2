@@ -7,13 +7,19 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileSystemView;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JList;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class DatosTablaGrafico extends JFrame {
@@ -44,9 +50,12 @@ public class DatosTablaGrafico extends JFrame {
 		lblVertabla.setBounds(10, 21, 457, 36);
 		contentPane.add(lblVertabla);
 		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(31, 128, 866, 306);
+		contentPane.add(scrollPane_1);
+		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(31, 128, 866, 306);
-		contentPane.add(scrollPane);
+		scrollPane_1.setViewportView(scrollPane);
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
@@ -56,6 +65,41 @@ public class DatosTablaGrafico extends JFrame {
 		contentPane.add(lblSelecciondesociedad);
 		
 		JComboBox list = new JComboBox();
+		list.setBounds(253, 77, 236, 22);
+		contentPane.add(list);
+
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		list.setModel(modelo);
+		for (Sociedad a : MenuPrincipalGrafico.mdp.listadoSociedades) {
+			modelo.addElement(a.getIndice() + "-" + a.getNombredesoc());
+		}
+		
+		JComboBox list1 = new JComboBox();
+		list.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				String sociedad = list.getSelectedItem().toString();
+				String strindice = sociedad.split("-")[0];
+				for (Sociedad s : MenuPrincipalGrafico.mdp.listadoSociedades) {
+					if (s.getIndice() == Integer.parseInt(strindice)) {
+						ArrayList<Object[]> elementos = MenuPrincipalGrafico.mdp.datosTabla(s);
+						DefaultTableModel tableModel  = new DefaultTableModel();
+						for (Cualidades cualidad : s.getCualidades()) {
+							tableModel.addColumn(cualidad.getNombrec());
+						}
+						for(Object[] item : elementos) {
+							tableModel.addRow(item);
+						}
+						
+						table.setModel(tableModel);
+						
+						break;
+					}
+
+				}
+			}
+
+		});
 		list.setBounds(308, 79, 236, 22);
 		contentPane.add(list);
 		
@@ -82,4 +126,6 @@ public class DatosTablaGrafico extends JFrame {
 		contentPane.add(btnSalir);
 		
 	}
+	
+	
 }

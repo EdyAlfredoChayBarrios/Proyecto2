@@ -31,7 +31,7 @@ public class MenuPrincipalGrafico extends JFrame {
 	private String rutaOrigen="C:\\Users\\edy chay\\eclipse-workspace\\Proyecto2\\";
 	private  String direccionSociedad = "Sociedad.dat";
 	private String direccionCualidades = "Cualidades.dat";
-	private final int totalBytes = 90, bytesSociedad = 45, bytesCualidades = 45;
+	private final int totalBytes = 83, bytesSociedad = 45, bytesCualidades = 45;
 	private final static String formatoFecha = "dd/MM/yyyy";
 	static DateFormat formato = new SimpleDateFormat(formatoFecha);
 	public static MaindeProyecto2 mdp;
@@ -128,6 +128,7 @@ public class MenuPrincipalGrafico extends JFrame {
 		
 		JButton btnBorrarbasedeDatos = new JButton("5. Borrar Base de Datos");
 		btnBorrarbasedeDatos.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
 				MenuPrincipalGrafico.mdp.borrarArchivos();
 				lblMensajedeBorrado.setText("Usted borro toda la base de datos ");		

@@ -25,13 +25,15 @@ import javax.swing.JSeparator;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Font;
+import javax.swing.JTextPane;
+import javax.swing.JScrollPane;
 
 public class MenuSociedadGrafico extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextPane textField_2;
 
 	public List<Cualidades> cualidades;
 	/**
@@ -98,11 +100,13 @@ public class MenuSociedadGrafico extends JFrame {
 		contentPane.add(lblTipodeDato);
 		
 		JComboBox list = new JComboBox();
-		textField_2 = new JTextField();
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(596, 172, 219, 181);
+		contentPane.add(scrollPane);
+		textField_2 = new JTextPane();
+		scrollPane.setViewportView(textField_2);
 		textField_2.setEditable(false);
-		textField_2.setBounds(596, 172, 219, 181);
-		contentPane.add(textField_2);
-		textField_2.setColumns(10);
 		
 		
 		list.setModel(new DefaultComboBoxModel(new String[] {"INT", "LONG", "FLOAT", "DOUBLE", "CHAR", "STRING", "DATE"}));

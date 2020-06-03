@@ -1,16 +1,19 @@
 package src.Proyect2;
 
 import java.awt.EventQueue;
-
+import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 public class MaindeProyecto2 {
 
@@ -24,7 +27,7 @@ public class MaindeProyecto2 {
 	public  String rutaOrigen="C:\\Users\\edy chay\\eclipse-workspace\\Proyecto2\\";
 	public  String direccionSociedad = "Sociedad.dat";
 	public String direccionCualidades = "Cualidades.dat";
-	public final int totalBytes = 90, bytesSociedad = 45, bytesCualidades = 45;
+	public final int totalBytes = 90, bytesSociedad = 45, bytesCualidades = 42;
 	Scanner sc = new Scanner(System.in);
 	private final static String formatoFecha = "dd/MM/yyyy";
 	static DateFormat formato = new SimpleDateFormat(formatoFecha);
@@ -70,21 +73,23 @@ public class MaindeProyecto2 {
 					}
 					Cualidades.seek(s.getPosition());
 					Cualidades c;
-					TamanoCualidades = s.getCantidad() * bytesCualidades;
+					TamanoCualidades = s.getCantidad() * 42;
 
-					while (TamanoCualidades >= bytesCualidades) {
-						c = new Cualidades();
-						c.setIndicec(Cualidades.readInt());
-						byte[] bytNombrec = new byte[30];
-						Cualidades.read(bytNombrec);
-						c.setBytesNombrec(bytNombrec);
-						c.setValordeDato(Cualidades.readInt());
-						c.setTamano(Cualidades.readInt());
-						c.setNombredeDato();
-						Cualidades.readByte();
-						s.setCualidades(c);
-						TamanoCualidades -= bytesCualidades;
-
+					while (TamanoCualidades>=42) {
+						try {
+							c = new Cualidades();
+							c.setIndicec(Cualidades.readInt());
+							byte[] bytNombrec = new byte[30];
+							Cualidades.read(bytNombrec);
+							c.setBytesNombrec(bytNombrec);
+							c.setValordeDato(Cualidades.readInt());
+							c.setTamano(Cualidades.readInt());
+							c.setNombredeDato();
+							s.setCualidades(c);
+							TamanoCualidades -= 42;
+						} catch (Exception exp) {
+							break;
+						}
 					}
 
 					listadoSociedades.add(s);
@@ -488,7 +493,7 @@ public class MaindeProyecto2 {
 				Cualidades.write(cualidad.getBytesNombrec());
 				Cualidades.writeInt(cualidad.getValordeDato());
 				Cualidades.writeInt(cualidad.getTamano());
-				Cualidades.write("\n".getBytes());
+				//Cualidades.write("\n".getBytes());
 			}
 
 			Sociedad.writeInt(sociedad.getIndice());
@@ -558,12 +563,12 @@ public class MaindeProyecto2 {
 						c.setValordeDato(Cualidades.readInt());
 						c.setTamano(Cualidades.readInt());
 						c.setNombredeDato();
-						Cualidades.readByte();						
+						//Cualidades.readByte();						
 						TamanoCualidades -= bytesCualidades;
 						if(c.getNombrec().trim().equals(nombre)) {
 							c.setNombrec(nuevoNombre);
 							position = registros * bytesCualidades;
-							if(registros>0) position--;
+							//if(registros>0) position--;
 							Cualidades.seek(position);
 							Cualidades.writeInt(c.getIndicec());							
 							Cualidades.write(c.getBytesNombrec());							
@@ -634,7 +639,6 @@ public class MaindeProyecto2 {
 						c.setValordeDato(Cualidades.readInt());
 						c.setTamano(Cualidades.readInt());
 						c.setNombredeDato();
-						Cualidades.readByte();
 						s.setCualidades(c);
 						TamanoCualidades -= bytesCualidades;
 						if(c.getNombrec().trim().equals(nombre)) {
@@ -659,5 +663,68 @@ public class MaindeProyecto2 {
 		return "";
 	}
 
+	public ArrayList<Object[]> datosTabla(Sociedad sociedad) {
+		ArrayList<Object[]> elementos = new ArrayList();
+		String rutaOrigen = "C:\\Users\\edy chay\\eclipse-workspace\\Proyecto2\\";
+		String r = rutaOrigen + sociedad.getNombredesoc().trim() + ".dat";
+		byte[] cadena;
+		try {
+			RandomAccessFile DatosdeTabla = new RandomAccessFile(r, "rw");
+			DatosdeTabla.seek(0);
+			
+			while (true) {
+				try {
+					Object[] linea = new Object[] {}; 
+					for (Cualidades cualidades : sociedad.getCualidades()) {
+						switch (cualidades.getValorDato()) {
+						case INT:
+							int datoInt = DatosdeTabla.readInt();
+							linea = appendValue(linea, datoInt);
+							break;
+						case LONG:
+							long datoLong = DatosdeTabla.readLong();
+							linea=appendValue(linea, datoLong);
+							break;
+						case FLOAT:
+							float datoflotat = DatosdeTabla.readFloat();
+							linea=appendValue(linea, datoflotat);
+							break;
+						case DOUBLE:
+							double tmpDouble = DatosdeTabla.readDouble();
+							linea=appendValue(linea, tmpDouble);
+							break;
+						case CHAR:
+							byte caracter = DatosdeTabla.readByte();
+							char valor = (char)Integer.parseInt(String.valueOf(caracter));
+							linea=appendValue(linea, valor);
+							break;
+						case STRING:
+						case DATE:
+							cadena = new  byte[cualidades.getTamano()];
+						    DatosdeTabla.read(cadena);
+						    String valorString = new String(cadena);
+							linea=appendValue(linea, valorString);
+							break;
+						}
+					}
+					elementos.add(linea);
+				} catch (EOFException e) {
+					break;
+				}
+			}
+		} catch (Exception error) {
+			System.out.println(
+					"Error " + error.getMessage() + " al capturar tipo de dato, vuelva a ingresar el valor: ");
+
+		}
+		return elementos;		
+	}
+	
+	private Object[] appendValue(Object[] obj, Object newObj) {
+		ArrayList<Object> temp = new ArrayList<Object>(Arrays.asList(obj));
+		temp.add(newObj);
+		return temp.toArray();
+	  }
+	
 
 }

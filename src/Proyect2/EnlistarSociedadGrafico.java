@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JTextPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 
 public class EnlistarSociedadGrafico extends JFrame {
 
@@ -39,9 +40,12 @@ public class EnlistarSociedadGrafico extends JFrame {
 		lblEnlistarScoiedad.setBounds(35, 26, 293, 22);
 		contentPane.add(lblEnlistarScoiedad);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(76, 91, 605, 238);
+		contentPane.add(scrollPane);
+		
 		JTextPane textPane = new JTextPane();
-		textPane.setBounds(76, 91, 605, 238);
-		contentPane.add(textPane);
+		scrollPane.setViewportView(textPane);
 		
 		
 		JButton btnSi = new JButton("SI");
