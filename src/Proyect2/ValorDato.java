@@ -1,5 +1,6 @@
 package src.Proyect2;
 
+//esta clase es un tipo enumerado
 public enum ValorDato {
 	
 	INT(1),

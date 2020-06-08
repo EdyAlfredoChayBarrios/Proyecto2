@@ -51,44 +51,46 @@ public class Cualidades {
 		return nombredeDato;
 	}
 
+	
 	public void setNombredeDato() {
-
+		
+		// este constructor se realizara siempre y cuando se seleccione como un int
 		if (this.valordeDato == ValorDato.INT.getValor()) {
 			this.nombredeDato = ValorDato.INT.name();
 			this.bytes = 4;
 			valorDato = ValorDato.INT;
 		}
-
+		// este constructor se realizara siempre y cuando se seleccione como un long
 		if (this.valordeDato == ValorDato.LONG.getValor()) {
 			this.nombredeDato = ValorDato.LONG.name();
 			this.bytes = 8;
 			valorDato = ValorDato.LONG;
 		}
-
+		// este constructor se realizara siempre y cuando se seleccione como un float
 		if (this.valordeDato == ValorDato.FLOAT.getValor()) {
 			this.nombredeDato = ValorDato.FLOAT.name();
 			this.bytes = 4;
 			valorDato = ValorDato.FLOAT;
 		}
-
+		// este constructor se realizara siempre y cuando se seleccione como un double
 		if (this.valordeDato == ValorDato.DOUBLE.getValor()) {
 			this.nombredeDato = ValorDato.DOUBLE.name();
 			this.bytes = 8;
 			valorDato = ValorDato.DOUBLE;
 		}
-
+		// este constructor se realizara siempre y cuando se seleccione como un char
 		if (this.valordeDato == ValorDato.CHAR.getValor()) {
 			this.nombredeDato = ValorDato.CHAR.name();
 			this.bytes = 1;
 			valorDato = ValorDato.CHAR;
 		}
-
+		// este constructor se realizara siempre y cuando se seleccione como un string
 		if (this.valordeDato == ValorDato.STRING.getValor()) {
 			this.nombredeDato = ValorDato.STRING.name();
 			this.bytes = this.tamano;
 			valorDato = ValorDato.STRING;
 		}
-
+		// este constructor se realizara siempre y cuando se seleccione como un dato
 		if (this.valordeDato == ValorDato.DATE.getValor()) {
 			this.nombredeDato = ValorDato.DATE.name();
 			this.bytes = 28;

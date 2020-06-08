@@ -3,7 +3,6 @@ package src.Proyect2;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -21,13 +20,7 @@ public class AgregarDatosTabla extends JFrame {
 
 	private JPanel contentPane;
 
-	/**
-	 * Launch the application.
-	 */
-	
-	/**
-	 * Create the frame.
-	 */
+	//Metodo que se crea la ventana de agregar datos
 	public AgregarDatosTabla() {
 		setTitle("AGREGAR DATOS A TABLA");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,7 +42,8 @@ public class AgregarDatosTabla extends JFrame {
 		JComboBox list = new JComboBox();
 		list.setBounds(253, 77, 236, 22);
 		contentPane.add(list);
-
+		
+		//Este Jbutton volver al menu al accionar los cerrar la venta actual y mostrar la ventana principal de Menu Principal Grafico
 		JButton btnVolveralmenu = new JButton("Volver al Menu Principal");
 		btnVolveralmenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -80,10 +74,12 @@ public class AgregarDatosTabla extends JFrame {
 		for (Sociedad a : MenuPrincipalGrafico.mdp.listadoSociedades) {
 			modelo.addElement(a.getIndice() + "-" + a.getNombredesoc());
 		}
-
+		
+		//Este Boton Agregar datos, la funcion hara que despliegue uan ventana emergente que podemos ingresar los datos que solicita la funcion
 		JButton btnAgergarDatos = new JButton("Agregar Datos");
 		btnAgergarDatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Ingresa a la sociedad en el archivo y nos pides los datos a ingresar ya que es dinamico
 				Sociedad sociedad = MenuPrincipalGrafico.mdp.listadoSociedades.get(list.getSelectedIndex());
 				String rutaOrigen = "C:\\Users\\edy chay\\eclipse-workspace\\Proyecto2\\";
 				String r = rutaOrigen + sociedad.getNombredesoc().trim() + ".dat";
@@ -100,6 +96,7 @@ public class AgregarDatosTabla extends JFrame {
 						System.out.println("Ingrese " + cualidades.getNombrec().trim());
 						while (!valido) {
 							switch (cualidades.getValorDato()) {
+							// estas opciones ingresara dependiendo el tipo de dato de la cualidad que se ha creado con anterioridad
 							case INT:
 								int tmpInt = Integer
 										.parseInt(JOptionPane.showInputDialog("ingrese " + cualidades.getNombrec()));

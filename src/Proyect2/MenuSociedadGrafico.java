@@ -1,9 +1,6 @@
 package src.Proyect2;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -14,17 +11,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
-import javax.swing.JList;
-import javax.swing.JToggleButton;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.AncestorEvent;
-import javax.swing.JScrollBar;
-import javax.swing.JRadioButton;
-import javax.swing.JSeparator;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
-import java.awt.Font;
 import javax.swing.JTextPane;
 import javax.swing.JScrollPane;
 
@@ -36,18 +24,8 @@ public class MenuSociedadGrafico extends JFrame {
 	private JTextPane textField_2;
 
 	public List<Cualidades> cualidades;
-	/**
-	 * Launch the application.
-	 */
 	
-	
-	
-	
-	
-	
-	/**
-	 * Create the frame.
-	 */
+	//Se crea el metodo Jframe para abrir la ventana emergente de Agregar Sociedad
 	public MenuSociedadGrafico() {
 		cualidades = new ArrayList<Cualidades>();
 		
@@ -127,8 +105,9 @@ public class MenuSociedadGrafico extends JFrame {
 		Sociedad sociedad = new Sociedad();
 		sociedad.setIndice(MenuPrincipalGrafico.mdp.listadoSociedades.size() + 1); 
 		
-		JButton btnSi = new JButton("Agregar cualidad");
-		btnSi.addActionListener(new ActionListener() {
+		//Este boton agregara a la lista de cualidades por agregar a la sociedad
+		JButton btnAgregarCualidad = new JButton("Agregar cualidad");
+		btnAgregarCualidad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				Cualidades cualidades = new Cualidades();
@@ -146,9 +125,10 @@ public class MenuSociedadGrafico extends JFrame {
 				textField_2.setText(datos);
 			}
 		});
-		btnSi.setBounds(315, 251, 144, 23);
-		contentPane.add(btnSi);
+		btnAgregarCualidad.setBounds(315, 251, 144, 23);
+		contentPane.add(btnAgregarCualidad);
 		
+		//Este boton agregar sociedad esta agregara la sociedad y con sus cualidades he debera ingresar el usuario
 		JButton btnAgregarSociedad = new JButton("Agregar sociedad");
 		btnAgregarSociedad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

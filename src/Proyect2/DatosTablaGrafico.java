@@ -1,40 +1,32 @@
 package src.Proyect2;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.EventQueue;
 
+import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.JList;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.io.RandomAccessFile;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 public class DatosTablaGrafico extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
+	public List<Cualidades> cualidadesSociedad;
 
-	/**
-	 * Launch the application.
-	 */
-	
-
-	/**
-	 * Create the frame.
-	 */
+	//Metodo que se crea la ventana de tabla de datos 
 	public DatosTablaGrafico() {
 		setTitle("TABLA DE DATOS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,6 +76,7 @@ public class DatosTablaGrafico extends JFrame {
 					if (s.getIndice() == Integer.parseInt(strindice)) {
 						ArrayList<Object[]> elementos = MenuPrincipalGrafico.mdp.datosTabla(s);
 						DefaultTableModel tableModel  = new DefaultTableModel();
+						cualidadesSociedad = s.getCualidades();
 						for (Cualidades cualidad : s.getCualidades()) {
 							tableModel.addColumn(cualidad.getNombrec());
 						}
@@ -125,7 +118,107 @@ public class DatosTablaGrafico extends JFrame {
 		btnSalir.setBounds(404, 457, 89, 23);
 		contentPane.add(btnSalir);
 		
+		
+		//Este boton cuenta con propia funcio de eliminar un dato seleccionado en la tabla
+		JButton btnBorrar = new JButton("Borrar");
+		btnBorrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				String sociedadSeleccionada = list.getSelectedItem().toString();
+				String nombreSociedad = sociedadSeleccionada.split("-")[1];
+				
+				Sociedad sociedad = MenuPrincipalGrafico.mdp.listadoSociedades.get(list.getSelectedIndex());
+				String rutaOrigen = "C:\\Users\\edy chay\\eclipse-workspace\\Proyecto2\\";
+				String r = rutaOrigen + sociedad.getNombredesoc().trim() + ".dat";
+				try {
+					RandomAccessFile DatosdeTabla = new RandomAccessFile(r, "rw");
+					DatosdeTabla.seek(DatosdeTabla.length());
+					boolean valido;
+					byte[] bytesString;
+					String tmpString = "";
+					int tamanio = 0;
+					for (Cualidades cualidades : sociedad.getCualidades()) {
+							switch (cualidades.getValorDato()) {
+							case INT:
+								tamanio += Integer.BYTES;
+								break;
+							case LONG:
+								tamanio += Long.BYTES;
+								break;
+
+							case FLOAT:
+								tamanio += Float.BYTES;
+								break;
+
+							case DOUBLE:
+								tamanio +=Double.BYTES;
+								break;
+
+							case CHAR:
+								tamanio+= 1;
+								break;
+							case STRING:
+								tamanio+=20;
+								break;
+
+							case DATE:
+								tamanio+=20;
+								break;
+							}
+					}
+					
+					int position = fila * tamanio;
+					DatosdeTabla.seek(position);
+					
+					for (Cualidades cualidades : sociedad.getCualidades()) {
+						
+						switch (cualidades.getValorDato()) {
+						case INT:
+							int tmpInt ;
+							DatosdeTabla. writeInt(0);
+							break;
+						case LONG:
+							DatosdeTabla.writeLong(0);
+							break;
+
+						case FLOAT:
+							
+							DatosdeTabla.writeFloat(0);
+							break;
+
+						case DOUBLE:
+							DatosdeTabla.writeDouble(0);
+							break;
+
+						case CHAR:							
+							DatosdeTabla.writeByte(' ');
+							break;
+						case STRING:
+							bytesString = new byte[cualidades.getTamano()];
+							DatosdeTabla.write(bytesString);
+							break;
+
+						case DATE:							
+							bytesString = new byte[cualidades.getBytes()];
+							DatosdeTabla.write(bytesString);
+							break;
+						}
+
+					}
+								
+					
+
+				} catch (Exception error) {
+					System.out.println(
+							"Error " + error.getMessage() + " al capturar tipo de dato, vuelva a ingresar el valor: ");
+
+				}
+				
+			}
+		});
+		btnBorrar.setBounds(563, 34, 89, 23);
+		contentPane.add(btnBorrar);
+		
 	}
-	
-	
 }

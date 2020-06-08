@@ -64,20 +64,15 @@ public class MaindeProyecto2 {
 					s.setPosition(Sociedad.readLong());
 					Sociedad.readByte();
 					tamano -= bytesSociedad;
-					long TamanoCualidades = Sociedad.length();
-
-					if (TamanoCualidades <= 0) {
-						System.out.println("No existe registros");
-						resultado = false;
-						break;
-					}
-					Cualidades.seek(s.getPosition());
-					Cualidades c;
-					TamanoCualidades = s.getCantidad() * 42;
-
-					while (TamanoCualidades>=42) {
+					listadoSociedades.add(s);
+				}
+				
+				for(Sociedad soc: listadoSociedades) {
+					soc.setCualidades(new ArrayList<Cualidades>());
+					Cualidades.seek(0);
+					while (true) {
 						try {
-							c = new Cualidades();
+							Cualidades c = new Cualidades();
 							c.setIndicec(Cualidades.readInt());
 							byte[] bytNombrec = new byte[30];
 							Cualidades.read(bytNombrec);
@@ -85,16 +80,15 @@ public class MaindeProyecto2 {
 							c.setValordeDato(Cualidades.readInt());
 							c.setTamano(Cualidades.readInt());
 							c.setNombredeDato();
-							s.setCualidades(c);
-							TamanoCualidades -= 42;
+							if(soc.getIndice() == c.getIndicec()) {
+								soc.getCualidades().add(c);
+							}							
 						} catch (Exception exp) {
 							break;
 						}
-					}
-
-					listadoSociedades.add(s);
-
+					}					
 				}
+				
 				if (listadoSociedades.size() > 0) {
 					resultado = true;
 				}
@@ -113,187 +107,7 @@ public class MaindeProyecto2 {
 	}
 
 	
-
-	void menuLaSociedad(int opcion, int opcion2) {
-		boolean mostrarAgregarRegistro = this.accederArchivo();
-		
-			switch (opcion) {
-		
-			case 1:
-				break;
-			case 2:
-				
-				break;
-			case 3:
-				
-			case 4:
-				
-				break;
-			case 5:
-				int confirmar = 0;
-				System.out.println(
-						"Esta seguro de borrar los archivos de base de datos, presione 1 de lo contrario cualquier numero para cancelar? Esta accion no se podra reversar");
-				confirmar = sc.nextInt();
-				if (confirmar == 1) {
-					cerrarArchivos();
-					if (borrarArchivos()) {
-						listadoSociedades = null;
-						listadoSociedades = new ArrayList<>();
-						mostrarAgregarRegistro = false;
-						System.out.println("Archivos borrados");
-					}
-				}
-				break;
-
-			default:
-				System.out.println("Opcion no valida");
-				break;
-			}
-		//}
-	}
-
-	public void iniciar(int indice) {
-		int opcion = 0;
-		String datosdeTabla = "";
-		try {
-			Sociedad sociedad = null;
-			for (Sociedad s : listadoSociedades) {
-				if (indice == s.getIndice()) {
-					datosdeTabla= integrarNombreArchivo(s.getNombredesoc());
-					sociedad = s;
-					break;
-				}
-			}
-			DatosdeTabla = new RandomAccessFile(rutaOrigen + datosdeTabla,"rw");
-			System.out.println("Bienvenido (a)");
-			Cualidades c = sociedad.getCualidades().get(0);
-			do {
-				try {
-					System.out.println("Seleccione su opcion");
-					System.out.println("1.\t\tAgregar");
-					System.out.println("2.\t\tListar");
-					System.out.println("3.\t\tBuscar");
-					System.out.println("4.\t\tModificar");
-					System.out.println("0.\t\tRegresar al menu anterior");
-					opcion = sc.nextInt();
-					switch (opcion) {
-					case 0:
-						System.out.println("");
-						break;
-					case 1:
-						grabarRegistro(sociedad);
-						break;
-					case 2:
-						enListarRegistros(sociedad);
-						break;
-					case 3:
-						System.out.println("Se hara la busqueda en la primera columna ");
-						System.out.println("Ingrese " + c.getNombrec().trim() + " a buscar");
-						break;
-					case 4:
-						System.out.println("Ingrese el carne a modificar: ");
-						break;
-					default:
-						System.out.println("Opcion no valida");
-						break;
-					}
-				} catch (Exception e) { // capturar cualquier excepcion que ocurra
-					System.out.println("Error: " + e.getMessage());
-				}
-			} while (opcion != 0);
-			DatosdeTabla.close();
-		} catch (Exception e) { // capturar cualquier excepcion que ocurra
-			System.out.println("Error: " + e.getMessage());
-		}
-	}
-
-	public void enListarRegistros(Sociedad sociedad) {
-		try {
-			long tamano = DatosdeTabla.length();
-			if (tamano <= 0) {
-				System.out.println("No hay registros");
-				return;
-			}
-			
-			DatosdeTabla.seek(0);
-			byte[] tmpArrayByte;
-			String linea = "";
-			for (Cualidades cualidades : sociedad.getCualidades()) {
-				linea += cualidades.getNombrec().toString().trim() + "\t\t";
-			}
-			System.out.println(linea);
-			while (tamano >= sociedad.getBytes()) {
-				linea = "";
-				for (Cualidades cualidades : sociedad.getCualidades()) {
-					switch (cualidades.getValorDato()) {
-					case INT:
-						int tmpInt = DatosdeTabla.readInt();
-						linea += String.valueOf(tmpInt) + "\t\t";
-						break;
-					case LONG:
-						long tmpLong = DatosdeTabla.readLong();
-						linea += String.valueOf(tmpLong) + "\t\t";
-						break;
-					case STRING:
-						tmpArrayByte = new byte[cualidades.getTamano()];
-						DatosdeTabla.read(tmpArrayByte);
-						String tmpString = new String(tmpArrayByte);
-						linea += tmpString.trim() + "\t\t";
-						break;
-					case DOUBLE:
-						double tmpDouble = DatosdeTabla.readDouble();
-						linea += String.valueOf(tmpDouble) + "\t\t";
-						break;
-					case FLOAT:
-						float tmpFloat = DatosdeTabla.readFloat();
-						linea += String.valueOf(tmpFloat) + "\t\t";
-						break;
-					case DATE:
-						tmpArrayByte = new byte[cualidades.getBytes()];
-						DatosdeTabla.read(tmpArrayByte);
-						tmpString = new String(tmpArrayByte);
-						linea += tmpString.trim() + "\t\t";
-						break;
-					case CHAR:
-						char tmpChar = (char) DatosdeTabla.readByte();
-						linea += tmpChar + "\t\t";
-						break;
-					}
-				}
-				DatosdeTabla.readByte();
-
-				tamano -= sociedad.getBytes();
-				System.out.println(linea);
-			}
-		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
-		}
-	}
-
-	private void cerrarArchivos() {
-		if (DatosdeTabla != null) {
-			try {
-				DatosdeTabla.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		if (Cualidades != null) {
-			try {
-				Cualidades.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		if (Sociedad != null) {
-			try {
-				Sociedad.close();
-			} catch (IOException e) {
-			e.printStackTrace();
-			}
-		}
-	}
-
+	//Esta funcion sirve para borra la base de datos ingresados que se han ingresado con aterioridad
 	public boolean borrarArchivos() {
 		boolean resultado = false;
 		try {
@@ -322,120 +136,6 @@ public class MaindeProyecto2 {
 		return resultado;
 	}
 
-	private boolean grabarRegistro(Sociedad sociedad) {
-		boolean resultado = false;
-		try {
-			
-			DatosdeTabla.seek(DatosdeTabla.length());
-			boolean valido;
-			byte[] bytesString;
-			String tmpString = "";
-			for (Cualidades cualidades : sociedad.getCualidades()) {
-				valido = false;
-				System.out.println("Ingrese " + cualidades.getNombrec().trim());
-				while (!valido) {
-					try {
-						switch (cualidades.getValorDato()) {
-						case INT:
-							int tmpInt = sc.nextInt();
-							DatosdeTabla.writeInt(tmpInt);
-							sc.nextLine();
-							break;
-						case LONG:
-							long tmpLong = sc.nextLong();
-							DatosdeTabla.writeLong(tmpLong);
-							break;
-						
-						case FLOAT:
-							float tmpFloat = sc.nextFloat();
-							DatosdeTabla.writeFloat(tmpFloat);
-							break;
-							
-						case DOUBLE:
-							double tmpDouble = sc.nextDouble();
-							DatosdeTabla.writeDouble(tmpDouble);
-							break;	
-						
-						case CHAR:
-							int tamano = 0;
-							do {
-								tmpString = sc.nextLine();
-								tamano = tmpString.length();
-								if (tamano < 1 || tamano > 1) {
-									System.out.println("Solo se permite un caracter");
-								}
-							} while (tamano < 1 || tamano > 1);
-							byte caracter = (byte) tmpString.charAt(0);
-							DatosdeTabla.writeByte(caracter);
-							break;
-							
-						case STRING:
-							do {
-								tmpString = sc.nextLine();
-								tamano = tmpString.length();
-								if (tamano <= 1 || tamano > cualidades.getTamano()) {
-									System.out.println("La tamano de " + cualidades.getNombrec().trim()
-											+ " no es valida [1 - " + cualidades.getTamano() + "]");
-								}
-							} while (tamano <= 0 || tamano > cualidades.getTamano());
-							bytesString = new byte[cualidades.getTamano()];
-							for (int i = 0; i < tmpString.length(); i++) {
-								bytesString[i] = (byte) tmpString.charAt(i);
-							}
-							DatosdeTabla.write(bytesString);
-							break;
-						
-					
-						case DATE:
-							Date date = null;
-							tmpString = "";
-							while (date == null) {
-								System.out.println("Formato de fecha: " + formatoFecha);
-								tmpString = sc.nextLine();
-								date = strintaDate(tmpString);
-							}
-							bytesString = new byte[cualidades.getBytes()];
-							for (int i = 0; i < tmpString.length(); i++) {
-								bytesString[i] = (byte) tmpString.charAt(i);
-							}
-							DatosdeTabla.write(bytesString);
-							break;
-						
-						}
-						valido = true;
-					} catch (Exception e) {
-						System.out.println(
-								"Error " + e.getMessage() + " al capturar tipo de dato, vuelva a ingresar el valor: ");
-						sc.nextLine();
-					}
-				} 
-			} 
-			DatosdeTabla.write("\n".getBytes()); 
-			resultado = true;
-		} catch (Exception e) {
-			resultado = false;
-			System.out.println("Error al agregar el registro " + e.getMessage());
-		}
-		return resultado;
-	}
-
-	public Date strintaDate(String stringFecha) {
-		Date fecha = null;
-		try {
-			fecha = formato.parse(stringFecha);
-		} catch (Exception e) {
-			fecha = null;
-			System.out.println("ERROR  EN FECHA: " + e.getMessage());
-		}
-		return fecha;
-	}
-
-	public String datoAString(Date fecha) {
-		String stringFecha;
-		stringFecha = formato.format(fecha);
-		return stringFecha;
-	}
-	
 	
 	/*********************MODIFICADOS**********************/
 	//ESTE METODO ENLISTA LA SOCIEDAD//
@@ -462,6 +162,7 @@ public class MaindeProyecto2 {
 	}
 	
 	
+	//Esta clase mostrar las sociedades y sus cualides en una lista detallada 
 	private String mostrarSociedad(Sociedad sociedad) {
 		String cadena ="";
 		cadena += "\n\n Indice: " + sociedad.getIndice();
@@ -482,6 +183,7 @@ public class MaindeProyecto2 {
 		return cadena;
 	}
 	
+	//Este metodo sirve para agregar una sociedad con sus cualidades
 	public boolean agregarSociedad(Sociedad sociedad) {
 		try {
 			sociedad.setIndice(listadoSociedades.size() + 1);
@@ -511,11 +213,27 @@ public class MaindeProyecto2 {
 		}
 	}
 	
+	//Este metodo sirve para agregar una cualidad individual de una sociedade que ya se ha creado
+	public boolean agregarCualidad(int indice, Cualidades cualidad) {
+		try {
+			Cualidades.seek(Cualidades.length());
+			Cualidades.writeInt(cualidad.getIndicec());
+			Cualidades.write(cualidad.getBytesNombrec());
+			Cualidades.writeInt(cualidad.getValordeDato());
+			Cualidades.writeInt(cualidad.getTamano());
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	//Este metodo sirve para modificar el nombre de la cualidad
 	public String modificarNombreCualidad(int indice, String nombre, String nuevoNombre) {
-		
 		try {				
 			Sociedad sociedad = null;
 			for (Sociedad s : listadoSociedades) {
+				System.out.println(s);
 				if (indice == s.getIndice()) {
 					sociedad = s;
 					break;
@@ -528,62 +246,90 @@ public class MaindeProyecto2 {
 			if (tamanoDatos > 0) {
 				return "No es posible modificar la entidad debido a que ya tiene datos asociados";
 			} 
-				
-			Sociedad.seek(0);
-			long tamano = Sociedad.length();
-			int registros = 0;
-			Sociedad s;
-			long position;
-			while (tamano >= bytesSociedad) {
-				s = new Sociedad();
-				s.setIndice(Sociedad.readInt());
-				byte[] bytNombre = new byte[30];
-				Sociedad.read(bytNombre);
-				s.setBytesNombre(bytNombre);
-				s.setCantidad(Sociedad.readInt());
-				s.setBytes(Sociedad.readInt());
-				s.setPosition(Sociedad.readLong());
-				Sociedad.readByte();
-				tamano -= bytesSociedad;
-				long TamanoCualidades = Sociedad.length();
-
-				if (TamanoCualidades <= 0) {
-					return "No existe registros";
+			
+			Cualidades.seek(0);
+			Cualidades c;
+			int contador = 0;
+			while (true) {
+				try {
+					c = new Cualidades();
+					c.setIndicec(Cualidades.readInt());
+					byte[] bytNombrec = new byte[30];
+					Cualidades.read(bytNombrec);
+					c.setBytesNombrec(bytNombrec);
+					c.setValordeDato(Cualidades.readInt());
+					c.setTamano(Cualidades.readInt());
+					c.setNombredeDato();
+					if(c.getNombrec().trim().equals(nombre) && sociedad.getIndice() == c.getIndicec()) {
+						c.setNombrec(nuevoNombre);
+						int position = contador * bytesCualidades;
+						Cualidades.seek(position);
+						Cualidades.writeInt(c.getIndicec());							
+						Cualidades.write(c.getBytesNombrec());							
+						return "modificado";
+					}
+					contador++;
+				} catch(IOException ex) {
+					break;
 				}
-				Cualidades.seek(s.getPosition());
-				Cualidades c;
-				TamanoCualidades = s.getCantidad() * bytesCualidades;
-				if (sociedad.getIndice() == s.getIndice()) {
-					while (TamanoCualidades >= bytesCualidades) {
-						c = new Cualidades();
-						c.setIndicec(Cualidades.readInt());
-						byte[] bytNombrec = new byte[30];
-						Cualidades.read(bytNombrec);
-						c.setBytesNombrec(bytNombrec);
-						c.setValordeDato(Cualidades.readInt());
-						c.setTamano(Cualidades.readInt());
-						c.setNombredeDato();
-						//Cualidades.readByte();						
-						TamanoCualidades -= bytesCualidades;
-						if(c.getNombrec().trim().equals(nombre)) {
-							c.setNombrec(nuevoNombre);
-							position = registros * bytesCualidades;
-							//if(registros>0) position--;
-							Cualidades.seek(position);
-							Cualidades.writeInt(c.getIndicec());							
-							Cualidades.write(c.getBytesNombrec());							
-							return "modificado";
-						}
-						registros++;
-					}	
-				}
-			}
+			}	
 			
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
 		}
 		return "";
 	}
+	
+	//Este metdo sirve para eliminar cualidad seleccionada
+	public String eliminarCualidad(int indice, String nombre) {
+		try {				
+			Sociedad sociedad = null;
+			for (Sociedad s : listadoSociedades) {
+				System.out.println(s);
+				if (indice == s.getIndice()) {
+					sociedad = s;
+					break;
+				}
+			}
+			String nombreArchivo = integrarNombreArchivo(sociedad.getNombredesoc());
+			DatosdeTabla = new RandomAccessFile(rutaOrigen +nombreArchivo, "rw");
+			long tamanoDatos = DatosdeTabla.length();
+			DatosdeTabla.close();
+			if (tamanoDatos > 0) {
+				return "No es posible modificar la entidad debido a que ya tiene datos asociados";
+			} 
+			
+			Cualidades.seek(0);
+			Cualidades c;
+			int contador = 0;
+			while (true) {
+				try {
+					c = new Cualidades();
+					c.setIndicec(Cualidades.readInt());
+					byte[] bytNombrec = new byte[30];
+					Cualidades.read(bytNombrec);
+					c.setBytesNombrec(bytNombrec);
+					c.setValordeDato(Cualidades.readInt());
+					c.setTamano(Cualidades.readInt());
+					c.setNombredeDato();
+					if(c.getNombrec().trim().equals(nombre) && sociedad.getIndice() == c.getIndicec()) {
+						int position = contador * bytesCualidades;
+						Cualidades.seek(position);
+						Cualidades.writeInt(-1);
+						return "modificado";
+					}
+					contador++;
+				} catch(IOException ex) {
+					break;
+				}
+			}	
+			
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+		return "";
+	}
+	
 	
 	public String modificarTipoCualidad(int indice, String nombre, int tipo) {
 		
@@ -603,61 +349,33 @@ public class MaindeProyecto2 {
 			if (tamanoDatos > 0) {
 				return "No es posible modificar la entidad debido a que ya tiene datos asociados";
 			} 
+			Cualidades.seek(0);
+			Cualidades c;
+			int contador = 0;
+			while (true) {
+				c = new Cualidades();
+				c.setIndicec(Cualidades.readInt());
+				byte[] bytNombrec = new byte[30];
+				Cualidades.read(bytNombrec);
+				c.setBytesNombrec(bytNombrec);
+				c.setValordeDato(Cualidades.readInt());
+				c.setTamano(Cualidades.readInt());
+				c.setNombredeDato();
+				if(c.getNombrec().trim().equals(nombre) && sociedad.getIndice() == c.getIndicec()) {
+					c.setValordeDato(tipo);
+					c.setNombredeDato();
+					int position = contador * bytesCualidades ;
+					Cualidades.seek(position);
+					Cualidades.writeInt(c.getIndicec());
+					Cualidades.write(c.getBytesNombrec());
+					Cualidades.writeInt(c.getValordeDato());
+					
+					return "modificado";
+				}
+				contador++;
+			}	
 				
-			Sociedad.seek(0);
-			long tamano = Sociedad.length();
-			int registros = 0;
-			Sociedad s;
-			long position;
-			
-			while (tamano >= bytesSociedad) {
-				s = new Sociedad();
-				s.setIndice(Sociedad.readInt());
-				byte[] bytNombre = new byte[30];
-				Sociedad.read(bytNombre);
-				s.setBytesNombre(bytNombre);
-				s.setCantidad(Sociedad.readInt());
-				s.setBytes(Sociedad.readInt());
-				s.setPosition(Sociedad.readLong());
-				Sociedad.readByte();
-				tamano -= bytesSociedad;
-				long TamanoCualidades = Sociedad.length();
-
-				if (TamanoCualidades <= 0) {
-					return "No existe registros";
-				}
-				Cualidades.seek(s.getPosition());
-				Cualidades c;
-				TamanoCualidades = s.getCantidad() * bytesCualidades;
-				if (sociedad.getIndice() == s.getIndice()) {
-					while (TamanoCualidades >= bytesCualidades) {
-						c = new Cualidades();
-						c.setIndicec(Cualidades.readInt());
-						byte[] bytNombrec = new byte[30];
-						Cualidades.read(bytNombrec);
-						c.setBytesNombrec(bytNombrec);
-						c.setValordeDato(Cualidades.readInt());
-						c.setTamano(Cualidades.readInt());
-						c.setNombredeDato();
-						s.setCualidades(c);
-						TamanoCualidades -= bytesCualidades;
-						if(c.getNombrec().trim().equals(nombre)) {
-							c.setValordeDato(tipo);
-							c.setNombredeDato();
-							position = registros * bytesCualidades ;
-							Cualidades.seek(position);
-							Cualidades.writeInt(c.getIndicec());
-							Cualidades.write(c.getBytesNombrec());
-							Cualidades.writeInt(c.getValordeDato());
-							
-							return "modificado";
-						}
-						registros++;
-					}	
-				}
-			}
-			
-		} catch (Exception e) {
+			} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
 		}
 		return "";

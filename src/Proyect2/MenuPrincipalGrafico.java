@@ -1,22 +1,17 @@
 package src.Proyect2;
 
-
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.RandomAccessFile;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
-import java.awt.Window.Type;
-import javax.swing.JMenuBar;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Color;
@@ -35,10 +30,9 @@ public class MenuPrincipalGrafico extends JFrame {
 	private final static String formatoFecha = "dd/MM/yyyy";
 	static DateFormat formato = new SimpleDateFormat(formatoFecha);
 	public static MaindeProyecto2 mdp;
-	/**
-	 * Launch the application.
-	 */
-
+	
+	
+	//Este es nuestro main que activa el entorno grafico de Menu principal
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -58,10 +52,7 @@ public class MenuPrincipalGrafico extends JFrame {
 		
 	}
 	
-
-	/**
-	 * Create the frame.
-	 */
+	//Este metodo crea la venta grafica del menu principal
 	public MenuPrincipalGrafico() {
 		setType(Type.POPUP);
 		setTitle("MENU GENERAL");
@@ -77,6 +68,7 @@ public class MenuPrincipalGrafico extends JFrame {
 		lblMensajedeBorrado.setBounds(334, 293, 241, 23);
 		contentPane.add(lblMensajedeBorrado);
 		
+		//Este boton acciona la clase MenuSociedadGrafico
 		JButton btnAgregarSociedad = new JButton("1. Agregar Sociedad");
 		btnAgregarSociedad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -89,6 +81,7 @@ public class MenuPrincipalGrafico extends JFrame {
 		btnAgregarSociedad.setBounds(319, 63, 256, 23);
 		contentPane.add(btnAgregarSociedad);
 				
+		//Este boton acciona la clase ModificarSociedadGrafica
 		JButton btnModificarSociedad = new JButton("2. Modificar Sociedad");
 		btnModificarSociedad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -101,6 +94,7 @@ public class MenuPrincipalGrafico extends JFrame {
 		btnModificarSociedad.setBounds(319, 97, 256, 23);
 		contentPane.add(btnModificarSociedad);
 		
+		//Este boton acciona la clase EnlistarSociedadGrafico
 		JButton btnenListarSociedad = new JButton("3. Enlistar Sociedad");
 		btnenListarSociedad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -114,6 +108,7 @@ public class MenuPrincipalGrafico extends JFrame {
 		btnenListarSociedad.setBounds(319, 131, 256, 23);
 		contentPane.add(btnenListarSociedad);
 		
+		//Este boton acciona la clase AgregarDatosTabla
 		JButton btnAgregardatosalaSociedad = new JButton("4. Agregar Datos a la Sociedad");
 		btnAgregardatosalaSociedad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -126,6 +121,7 @@ public class MenuPrincipalGrafico extends JFrame {
 		btnAgregardatosalaSociedad.setBounds(319, 165, 256, 23);
 		contentPane.add(btnAgregardatosalaSociedad);
 		
+		//Este boton accion la funcion borrarArchivos
 		JButton btnBorrarbasedeDatos = new JButton("5. Borrar Base de Datos");
 		btnBorrarbasedeDatos.addActionListener(new ActionListener() {
 			
@@ -150,12 +146,14 @@ public class MenuPrincipalGrafico extends JFrame {
 		btnSalir.setBounds(403, 352, 89, 23);
 		contentPane.add(btnSalir);
 		
+		//Este la etiqueta del titulo de la ventana
 		JLabel lblMenuprincipañ = new JLabel("Menu Principal");
 		lblMenuprincipañ.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMenuprincipañ.setFont(new Font("Tahoma", Font.BOLD, 30));
 		lblMenuprincipañ.setBounds(171, 11, 557, 41);
 		contentPane.add(lblMenuprincipañ);
 		
+		//Este boton acciona la clase DatosTablaGrafica
 		JButton btnVerlosdatos = new JButton("6. Ver datos en tabla de una sociedad");
 		btnVerlosdatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

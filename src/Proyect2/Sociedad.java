@@ -10,7 +10,6 @@ public class Sociedad {
 	
 	//en este paso se creara las cualidades de la sociedad con una lisya
 	
-	
 	private int indice;
 	private String Nombredesoc;
 	private long Position;
@@ -18,11 +17,6 @@ public class Sociedad {
 	private byte[]bytesNombre;
 	private int bytes=1;
 	private List<Cualidades>cualidades;
-	
-	
-	
-	
-	
 	
 	public int getIndice() {
 		return indice;
@@ -40,7 +34,6 @@ public class Sociedad {
 			bytesNombre[i] = (byte)nombre.charAt(i);
 		}
 	}
-	
 	
 	
 	public long getPosition() {
